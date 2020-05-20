@@ -25,7 +25,7 @@ class ShopAddress
     private $orders;
 
     /**
-     * @ORM\ManyToOne(targetEntity=UserShopTrait::class, inversedBy="addresses")
+     * @ORM\ManyToOne(targetEntity=BaseUserShop::class, inversedBy="addresses")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;

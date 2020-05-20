@@ -25,7 +25,12 @@ class Cart
     private $products;
 
     /**
-     * @ORM\ManyToOne(targetEntity=UserShopTrait::class, inversedBy="carts")
+     * @ORM\Column(type="boolean")
+     */
+    private $isSaved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=BaseUserShop::class, inversedBy="carts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
@@ -71,12 +76,24 @@ class Cart
         return $this;
     }
 
-    public function getClient(): ?UserShopTrait
+    public function getIsSaved(): ?bool
+    {
+        return $this->isSaved;
+    }
+
+    public function setIsSaved(bool $isSaved): self
+    {
+        $this->isSaved = $isSaved;
+
+        return $this;
+    }
+
+    public function getClient(): ?BaseUserShop
     {
         return $this->client;
     }
 
-    public function setClient(?UserShopTrait $client): self
+    public function setClient(?BaseUserShop $client): self
     {
         $this->client = $client;
 

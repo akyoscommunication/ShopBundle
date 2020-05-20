@@ -36,7 +36,6 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $orderOfProduct;
 

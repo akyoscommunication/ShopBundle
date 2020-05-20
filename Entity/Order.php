@@ -37,7 +37,7 @@ class Order
     private $address;
 
     /**
-     * @ORM\ManyToOne(targetEntity=UserShopTrait::class, inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity=BaseUserShop::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;

@@ -16,7 +16,16 @@ class ExtendSidebar
 
     public function getTemplate($route)
     {
-        $template = '<li class="'.(strpos($route,"contact_form") !== false ? "active" : "").'"><a href="'.$this->router->generate('contact_form_index').'">Formulaire de contact</a></li>';
+        $template = '
+        <li class="">
+            <a href="#shop" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">Shop</a>
+            <ul class="list-unstyled collapse" id="shop" style="">
+                <li class="'.(strpos($route,"product") !== false ? "active" : "").'">
+                    <a href="'.$this->router->generate('product_index').'">Produits</a>
+                </li>
+            </ul>
+        </li>
+        ';
         return new Response($template);
     }
 }
