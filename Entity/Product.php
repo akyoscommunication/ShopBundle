@@ -39,11 +39,6 @@ class Product
      */
     private $orderOfProduct;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Cart::class, inversedBy="products")
-     */
-    private $cart;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -97,15 +92,8 @@ class Product
         return $this;
     }
 
-    public function getCart(): ?Cart
+    public function __toString()
     {
-        return $this->cart;
-    }
-
-    public function setCart(?Cart $cart): self
-    {
-        $this->cart = $cart;
-
-        return $this;
+        return $this->name;
     }
 }

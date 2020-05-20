@@ -21,11 +21,6 @@ class Order
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="orderOfProduct", orphanRemoval=true)
-     */
-    private $products;
-
-    /**
      * @ORM\OneToOne(targetEntity=Payment::class, inversedBy="OrderOfPayment", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -53,46 +48,25 @@ class Order
      */
     private $orderStatus;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CartItem::class, mappedBy="orderOfItem")
+     */
+    private $cartItems;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ref;
+
     public function __construct()
     {
-        $this->products = new ArrayCollection();
         $this->address = new ArrayCollection();
+        $this->cartItems = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setOrderOfProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
-            // set the owning side to null (unless already changed)
-            if ($product->getOrderOfProduct() === $this) {
-                $product->setOrderOfProduct(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getPayment(): ?Payment
@@ -165,6 +139,49 @@ class Order
     public function setOrderStatus(?OrderStatus $orderStatus): self
     {
         $this->orderStatus = $orderStatus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CartItem[]
+     */
+    public function getCartItems(): Collection
+    {
+        return $this->cartItems;
+    }
+
+    public function addCartItem(CartItem $cartItem): self
+    {
+        if (!$this->cartItems->contains($cartItem)) {
+            $this->cartItems[] = $cartItem;
+            $cartItem->setOrderOfItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartItem(CartItem $cartItem): self
+    {
+        if ($this->cartItems->contains($cartItem)) {
+            $this->cartItems->removeElement($cartItem);
+            // set the owning side to null (unless already changed)
+            if ($cartItem->getOrderOfItem() === $this) {
+                $cartItem->setOrderOfItem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRef(): ?string
+    {
+        return $this->ref;
+    }
+
+    public function setRef(string $ref): self
+    {
+        $this->ref = $ref;
 
         return $this;
     }

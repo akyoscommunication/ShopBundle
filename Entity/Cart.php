@@ -20,60 +20,29 @@ class Cart
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="cart")
-     */
-    private $products;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $isSaved;
 
     /**
      * @ORM\ManyToOne(targetEntity=BaseUserShop::class, inversedBy="carts")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $client;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CartItem::class, mappedBy="cart")
+     */
+    private $cartItems;
+
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->cartItems = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setCart($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
-            // set the owning side to null (unless already changed)
-            if ($product->getCart() === $this) {
-                $product->setCart(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getIsSaved(): ?bool
@@ -96,6 +65,37 @@ class Cart
     public function setClient(?BaseUserShop $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CartItem[]
+     */
+    public function getCartItems(): Collection
+    {
+        return $this->cartItems;
+    }
+
+    public function addCartItem(CartItem $cartItem): self
+    {
+        if (!$this->cartItems->contains($cartItem)) {
+            $this->cartItems[] = $cartItem;
+            $cartItem->setCart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartItem(CartItem $cartItem): self
+    {
+        if ($this->cartItems->contains($cartItem)) {
+            $this->cartItems->removeElement($cartItem);
+            // set the owning side to null (unless already changed)
+            if ($cartItem->getCart() === $this) {
+                $cartItem->setCart(null);
+            }
+        }
 
         return $this;
     }

@@ -24,7 +24,7 @@ class UserShopAuthenticator extends AbstractFormLoginAuthenticator implements Pa
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE = 'shop_login';
 
     private $entityManager;
     private $urlGenerator;
@@ -96,7 +96,7 @@ class UserShopAuthenticator extends AbstractFormLoginAuthenticator implements Pa
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('some_route'));
+        return new RedirectResponse($this->urlGenerator->generate('home'));
     }
 
     protected function getLoginUrl()

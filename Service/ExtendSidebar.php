@@ -22,6 +22,8 @@ class ExtendSidebar
             <ul class="list-unstyled collapse" id="shop" style="">
                 <li class="'.(strpos($route,"product") !== false ? "active" : "").'">
                     <a href="'.$this->router->generate('product_index').'">Produits</a>
+                    <a href="'.$this->router->generate('order_index').'">Commandes</a>
+                    <a href="'.$this->router->generate('cart_index').'">Paniers</a>
                 </li>
             </ul>
         </li>

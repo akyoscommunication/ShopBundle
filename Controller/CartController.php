@@ -4,11 +4,12 @@ namespace Akyos\ShopBundle\Controller;
 
 use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\Cart;
+use Akyos\ShopBundle\Entity\CartItem;
 use Akyos\ShopBundle\Entity\Product;
 use Akyos\ShopBundle\Form\Handler\CartHandler;
 use Akyos\ShopBundle\Form\CartType;
 use Akyos\ShopBundle\Repository\CartRepository;
-use Akyos\ShopBundle\Service\CartService;
+use Akyos\ShopBundle\Service\Cart\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +45,8 @@ class CartController extends AbstractController
             'route' => 'cart',
             'fields' => [
                 'Id' => 'Id',
-                'Nom du produit' => 'Name',
+                'Sauvegardé ?' => 'IsSaved',
+                'Client' => 'Client',
             ]
         ]);
     }
@@ -83,20 +85,52 @@ class CartController extends AbstractController
     }
 
     /**
-     * @Route("/add-to-cart/{id}", name="show", methods={"POST", "GET"})
+     * @Route("/add-to-cart/{id}/{qty}", name="add-to-cart", methods={"GET"})
      * @param Product $product
      * @param CartService $cartService
      * @param Request $request
      * @param CartRepository $cartRepository
+     * @param int $qty
      * @return Response
      */
-    public function addToCart(Product $product, CartService $cartService, Request $request, CartRepository $cartRepository): Response
+    public function addToCart(Product $product, CartService $cartService, Request $request, CartRepository $cartRepository, $qty = 1): Response
     {
-        /** @var BaseUserShop $user */
-        $user = $this->getUser();
-        if ($cartService->add($cartRepository->findOneBy(['client' => $user->getId(), 'isSaved' => false]), $product)) {
-            return $this->redirect($request->getUri());
-        }
+        $cartItem = new CartItem();
+        $cartItem->setProduct($product);
+        $cartItem->setQty($qty);
+
+        $cartService->add($cartItem);
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+ * @Route("/remove-to-cart/{id}", name="remove-to-cart", methods={"POST"})
+ * @param CartItem $cartItem
+ * @param CartService $cartService
+ * @param Request $request
+ * @return Response
+ */
+    public function removeToCart(CartItem $cartItem, CartService $cartService, Request $request)
+    {
+        $cartService->remove($cartItem);
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/update-cart/{id}/{qty}", name="update-cart", methods={"POST"})
+     * @param CartItem $cartItem
+     * @param CartService $cartService
+     * @param Request $request
+     * @param int $qty
+     * @return Response
+     */
+    public function updateCart(CartItem $cartItem, CartService $cartService, Request $request, $qty = 0)
+    {
+        $cartService->update($cartItem, $qty);
+
+        return $this->redirectToRoute('home');
     }
 
     /**

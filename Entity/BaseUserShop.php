@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @MappedSuperclass
- * @ORM\Entity(repositoryClass=BaseUserShopRepository::class)
+ * @ORM\Entity(repositoryClass="Akyos\ShopBundle\Repository\BaseUserShopRepository")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class BaseUserShop extends BaseUser
@@ -34,7 +34,7 @@ class BaseUserShop extends BaseUser
     private $addresses;
 
     /**
-     * @ORM\OneToMany(targetEntity=Cart::class, mappedBy="client", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Akyos\ShopBundle\Entity\Cart", mappedBy="client", orphanRemoval=true)
      */
     private $carts;
 
@@ -141,5 +141,10 @@ class BaseUserShop extends BaseUser
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->email;
     }
 }

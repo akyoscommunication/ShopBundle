@@ -1,0 +1,133 @@
+<?php
+
+namespace Akyos\ShopBundle\Service\Cart;
+
+use Akyos\ShopBundle\Entity\BaseUserShop;
+use Akyos\ShopBundle\Entity\Cart;
+use Akyos\ShopBundle\Entity\CartItem;
+use Akyos\ShopBundle\Repository\CartItemRepository;
+use Akyos\ShopBundle\Repository\CartRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Security;
+
+class CartService
+{
+    /** @var EntityManagerInterface */
+    private $em;
+    /** @var BaseUserShop */
+    private $user;
+    /** @var CartRepository */
+    private $cartRepository;
+    /** @var SessionInterface */
+    private $session;
+    /** @var CartItemRepository */
+    private $cartItemRepository;
+
+    public function __construct(EntityManagerInterface $em, Security $security, CartRepository $cartRepository, CartItemRepository $cartItemRepository, SessionInterface $session)
+    {
+        $this->em = $em;
+        $this->user = $security->getUser();
+        $this->cartRepository = $cartRepository;
+        $this->cartItemRepository = $cartItemRepository;
+        $this->session = $session;
+    }
+
+    public function getCart()
+    {
+        /** @var Cart $cartSession */
+        $cartSession = ($this->session->get('panier') ? $this->cartRepository->find($this->session->get('panier')) : null);
+
+        if ($this->user) {
+            $ifCartExist = $this->cartRepository->findOneBy(['client' => $this->user->getId(), 'isSaved' => false]);
+            if ($cartSession) {
+                if ($ifCartExist) {
+                    foreach ($ifCartExist->getCartItems() as $cartItem) {
+                        $ifCartExist->removeCartItem($cartItem);
+                        $this->em->remove($cartItem);
+                    }
+                    $this->em->remove($ifCartExist);
+
+                    $cartSession->setClient($this->user);
+                    $this->em->flush();
+                }
+                return $cartSession;
+            } else {
+                if ($ifCartExist) {
+                    return $ifCartExist;
+                } else {
+                    $newCart = new Cart();
+                    $newCart->setClient($this->user);
+                    $newCart->setIsSaved(false);
+                    $this->em->persist($newCart);
+                    $this->em->flush();
+
+                    $this->session->set('panier', $newCart->getId());
+
+                    return $newCart;
+                }
+            }
+        } else {
+            if ($cartSession) {
+                return $cartSession;
+            } else {
+                $newCart = new Cart();
+                $newCart->setIsSaved(false);
+                $this->em->persist($newCart);
+                $this->em->flush();
+
+                $this->session->set('panier', $newCart->getId());
+
+                return $newCart;
+            }
+        }
+    }
+
+    public function add(CartItem $cartItem)
+    {
+        $existInCart = $this->cartItemRepository->findOneBy(['cart' => $this->getCart(), 'product' => $cartItem->getProduct()]);
+
+        if ($existInCart) {
+            $existInCart->setQty($existInCart->getQty() + $cartItem->getQty());
+        } else {
+            $this->getCart()->addCartItem($cartItem);
+            $this->em->persist($cartItem);
+        }
+
+        $this->em->flush();
+    }
+
+    public function update(CartItem $cartItem, int $qty)
+    {
+        $cartItem->setQty($qty);
+        $this->em->flush();
+    }
+
+    public function remove(CartItem $cartItem)
+    {
+        $this->getCart()->removeCartItem($cartItem);
+        $this->em->flush();
+    }
+
+    public function getTotal() : int
+    {
+        $total = 0;
+
+        foreach ($this->getCart()->getCartItems() as $cartItem) {
+            $total += $cartItem->getProduct()->getPrice();
+        }
+
+        return $total;
+    }
+
+    public function getTotalQty()
+    {
+        $total = 0;
+
+        foreach ($this->getCart()->getCartItems() as $cartItem) {
+            $total += $cartItem->getQty();
+        }
+
+        return $total;
+    }
+}
