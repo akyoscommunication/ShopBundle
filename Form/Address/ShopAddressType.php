@@ -12,11 +12,6 @@ class ShopAddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('client', null, [
-                'placeholder' => 'Choisir un client',
-                'multiple' => false,
-                'expanded' => false,
-            ])
             ->add('title')
             ->add('firstName')
             ->add('lastName')

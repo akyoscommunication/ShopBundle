@@ -27,6 +27,16 @@ class OrderMail
      */
     private $orderStatus;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $subject;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $template;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,6 +68,30 @@ class OrderMail
         if ($orderStatus->getOrderEmail() !== $newOrderEmail) {
             $orderStatus->setOrderEmail($newOrderEmail);
         }
+
+        return $this;
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(string $subject): self
+    {
+        $this->subject = $subject;
+
+        return $this;
+    }
+
+    public function getTemplate(): ?string
+    {
+        return $this->template;
+    }
+
+    public function setTemplate(string $template): self
+    {
+        $this->template = $template;
 
         return $this;
     }

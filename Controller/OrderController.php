@@ -4,6 +4,8 @@ namespace Akyos\ShopBundle\Controller;
 
 use Akyos\ShopBundle\Entity\Cart;
 use Akyos\ShopBundle\Entity\Order;
+use Akyos\ShopBundle\Entity\OrderStatus;
+use Akyos\ShopBundle\Entity\OrderStatusLog;
 use Akyos\ShopBundle\Entity\ShopAddress;
 use Akyos\ShopBundle\Form\Address\ShopAddressType;
 use Akyos\ShopBundle\Form\Cart\CartType;
@@ -11,6 +13,7 @@ use Akyos\ShopBundle\Form\Handler\OrderHandler;
 use Akyos\ShopBundle\Form\Handler\ShopAddressHandler;
 use Akyos\ShopBundle\Form\Order\OrderTypeNew;
 use Akyos\ShopBundle\Repository\OrderRepository;
+use Akyos\ShopBundle\Service\Mailer;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +68,10 @@ class OrderController extends AbstractController
      */
     public function new(Cart $cart, Request $request, OrderHandler $orderHandler, ShopAddressHandler $shopAddressHandler) : Response
     {
+        if ($cart->getOrderOfCart()) {
+            return $this->redirectToRoute('baseUserShop_show', ['id' => $cart->getClient()->getId()]);
+        }
+
         $order = new Order();
         $order->setCart($cart);
         $order->setClient($cart->getClient());
@@ -80,7 +87,7 @@ class OrderController extends AbstractController
 
         $form = $this->createForm(OrderTypeNew::class, $order);
         if ($orderHandler->new($form, $request)) {
-            return $this->redirectToRoute('baseUserShop_show', ['id' => $cart->getClient()]);
+            return $this->redirectToRoute('baseUserShop_show', ['id' => $cart->getClient()->getId()]);
         }
         return $this->render('@AkyosShop/order/new.html.twig', [
             'form' => $form->createView(),
@@ -89,6 +96,21 @@ class OrderController extends AbstractController
             'entity' => 'Order',
             'route' => 'order'
         ]);
+    }
+
+    /**
+     * @Route("/{statusLog}", name="resendmail_status", methods={"GET"})
+     * @param OrderStatusLog $statusLog
+     * @param Mailer $mailer
+     *
+     * @return bool
+     */
+    public function resendMailStatus(OrderStatusLog $statusLog, Mailer $mailer)
+    {
+        $order = $statusLog->getOrderOfStatusLog();
+        $orderStatusMail = $statusLog->getOrderStatus()->getOrderEmail();
+
+        return $mailer->sendMessage($order->getClient()->getEmail(), $orderStatusMail->getSubject(), $orderStatusMail->getTemplate(), $order);
     }
 
     /**
@@ -124,7 +146,7 @@ class OrderController extends AbstractController
         $form = $this->createForm(OrderTypeNew::class, $order);
 
         if($orderHandler->edit($form, $request)) {
-            return new JsonResponse('valid');
+            return $this->redirect($request->getUri());
         }
 
         return $this->render('@AkyosShop/order/new.html.twig', [

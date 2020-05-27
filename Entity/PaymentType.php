@@ -25,11 +25,6 @@ class PaymentType
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Payment::class, inversedBy="paymentType")
-     */
-    private $payment;
-
-    /**
      * @ORM\ManyToMany(targetEntity=ShippingMode::class, mappedBy="paymentTypes")
      */
     private $shippingModes;
@@ -52,18 +47,6 @@ class PaymentType
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getPayment(): ?Payment
-    {
-        return $this->payment;
-    }
-
-    public function setPayment(?Payment $payment): self
-    {
-        $this->payment = $payment;
 
         return $this;
     }
@@ -94,5 +77,10 @@ class PaymentType
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 }

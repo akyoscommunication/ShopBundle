@@ -25,19 +25,10 @@ class Payment
     private $OrderOfPayment;
 
     /**
-     * @ORM\OneToMany(targetEntity=PaymentType::class, mappedBy="payment")
+     * @ORM\ManyToOne(targetEntity=PaymentType::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $paymentType;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
-
-    public function __construct()
-    {
-        $this->paymentType = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -61,51 +52,15 @@ class Payment
         return $this;
     }
 
-    /**
-     * @return Collection|PaymentType[]
-     */
-    public function getPaymentType(): Collection
+    public function getPaymentType(): ?PaymentType
     {
         return $this->paymentType;
     }
 
-    public function addPaymentType(PaymentType $paymentType): self
+    public function setPaymentType(?PaymentType $paymentType): self
     {
-        if (!$this->paymentType->contains($paymentType)) {
-            $this->paymentType[] = $paymentType;
-            $paymentType->setPayment($this);
-        }
+        $this->paymentType = $paymentType;
 
         return $this;
-    }
-
-    public function removePaymentType(PaymentType $paymentType): self
-    {
-        if ($this->paymentType->contains($paymentType)) {
-            $this->paymentType->removeElement($paymentType);
-            // set the owning side to null (unless already changed)
-            if ($paymentType->getPayment() === $this) {
-                $paymentType->setPayment(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->title;
     }
 }

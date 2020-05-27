@@ -3,6 +3,7 @@
 namespace Akyos\ShopBundle\Form\Handler;
 
 use Akyos\ShopBundle\Entity\Order;
+use Akyos\ShopBundle\Entity\Payment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,13 @@ class OrderHandler extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $order = $form->getData();
+            $paymentType = $form->get('paymentType')->getData();
+
+            $payment = new Payment();
+            $payment->setPaymentType($paymentType);
+            $payment->setOrderOfPayment($order);
+
+            $this->em->persist($payment);
             $this->em->persist($order);
             $this->em->flush();
             return true;
@@ -33,7 +41,6 @@ class OrderHandler extends AbstractController
     {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->getData()->getCartItems()->getValues());
             $this->em->flush();
             return true;
         }

@@ -2,6 +2,7 @@
 
 namespace Akyos\ShopBundle\Controller;
 
+use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\ShopAddress;
 use Akyos\ShopBundle\Form\Handler\ShopAddressHandler;
 use Akyos\ShopBundle\Form\Address\ShopAddressType;
@@ -51,14 +52,16 @@ class ShopAddressController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="new", methods={"GET","POST"})
+     * @Route("/new/{client}", name="new", methods={"GET","POST"})
      * @param Request $request
      * @param ShopAddressHandler $shopAddressHandler
      * @return Response
      */
-    public function new(Request $request, ShopAddressHandler $shopAddressHandler) : Response
+    public function new(BaseUserShop $client, Request $request, ShopAddressHandler $shopAddressHandler) : Response
     {
         $shopAddress = new ShopAddress();
+        $shopAddress->setClient($client);
+
         $form = $this->createForm(ShopAddressType::class, $shopAddress);
         if ($shopAddressHandler->new($form, $request)) {
             return $this->redirectToRoute('shopAddress_index');

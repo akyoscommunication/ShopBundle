@@ -1,4 +1,4 @@
-{% extends '@AkyosCore/layout.html.twig' %}
+{% extends '@AkyosShop/layout.html.twig' %}
 {% form_theme form '@AkyosShop/order/themes/new.html.twig' %}
 
 {% block title %}{{ title }}{% endblock %}
@@ -25,15 +25,46 @@
                         {{ user.email }}
                     </div>
                 </div>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        {% set cart = form.vars.value.cart %}
-                        <h3>Panier</h3>
-                        <ul>
+                <div class="aky-card mb-4">
+                    {% set cart = form.vars.value.cart %}
+                    <div class="aky-card-header">
+                        <h4 class="aky-card-header__title">Panier</h4>
+                    </div>
+                    <div class="aky-card-body">
+                        <table class="aky-shop-table">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Qantité</th>
+                                    <th>Prix</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             {% for cartItem in cart.cartItems %}
-                                <li><b>{{ cartItem.product }}</b> <small>x{{ cartItem.qty }}</small> : {{ cartItem.price }}€</li>
+                            <tr>
+                                <td>
+                                    <div class="product">
+                                        <div class="product-img">
+                                            {{ renderFileManager(cartItem.product.thumbnail, false)|raw }}
+                                        </div>
+                                        <div class="product-title">
+                                            {{ cartItem.product }}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>x{{ cartItem.qty }}</td>
+                                <td><b>{{ cartItem.price }} €</b></td>
+                            </tr>
                             {% endfor %}
-                        </ul>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th scope="row">Total</th>
+                                    <td></td>
+                                    <td><span class="aky-shop-table__total">{{ getTotalPriceOfCart(cart) }}</span></td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>

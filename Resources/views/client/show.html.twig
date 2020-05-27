@@ -1,4 +1,4 @@
-{% extends '@AkyosCore/layout.html.twig' %}
+{% extends '@AkyosShop/layout.html.twig' %}
 
 {% block title %}Editer{% endblock %}
 
@@ -9,22 +9,69 @@
     </div>
 
     <div class="content" data-type="{{ entity is defined ? entity : '' }}" data-typeid="{{ el.id is defined ? el.id : '' }}">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h4>Panier</h4>
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <p><b>Email :</b> <small>{{ baseUserShop.email }}</small></p>
             </div>
-            <div class="card-body">
-                {% include '@AkyosShop/cart/elements/_table.html.twig' with { els : baseUserShop.carts, route : 'cart', 'fields' : { 'id' : 'Id' }} only %}
+            <div class="col-md-8">
+                <div class="aky-card">
+                    <div class="aky-card-header">
+                        <h4 class="aky-card-header__title">Adresses</h4>
+                        <a class="btn btn-success" href="{{ path('shopAddress_new', { 'client' : baseUserShop.id }) }}"><i class="fas fa-plus"></i></a>
+                    </div>
+                    <div class="aky-card-body container-fluid">
+                        <div class="row">
+                            {% for address in baseUserShop.addresses %}
+                                <div class="col-md-4">
+                                    <div class="aky-card mb-3">
+                                        <div class="aky-card-header pb-1">
+                                            <h6 class="aky-card-header__title">{{ address.title }}</h6>
+                                            <div>
+                                                <a class="btn btn-primary btn-sm" href="{{ path('shopAddress_edit', { 'id' : address.id }) }}"><i class="fas fa-pen"></i></a>
+                                                <form method="post" class="not-submit index-delete" action="{{ path('shopAddress_delete', {'id': address.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ address.id) }}">
+                                                    <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="aky-card-body small-text p-nospace">
+                                            <p>Nom prénom : {{ address.firstname~' '~address.lastname }}</p>
+                                            <p>Adresse : {{ address.address }}</p>
+                                            <p>Code postal : {{ address.zip }}</p>
+                                            <p>Ville : {{ address.city }}</p>
+                                            <p>Pays : {{ address.country }}</p>
+                                            <p>N°Tel : {{ address.homephone }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-
-        <div class="card mb-4">
-            <div class="card-header">
-                <h4>Commandes</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="aky-card mb-5">
+                    <div class="aky-card-header">
+                        <h4 class="aky-card-header__title">Panier</h4>
+                        <a class="btn btn-success" href="{{ path('cart_new', { 'client' : baseUserShop.id }) }}"><i class="fas fa-plus"></i></a>
+                    </div>
+                    <div class="aky-card-body">
+                        {% include '@AkyosShop/cart/elements/_table.html.twig' with { els : baseUserShop.carts, route : 'cart', 'fields' : { 'id' : 'Id' }} only %}
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                {% include '@AkyosShop/order/elements/_table.html.twig' with { els : baseUserShop.orders, route : 'order', 'fields' : { 'id' : 'Id', 'référence' : 'Ref' }} only %}
+            <div class="col-md-6">
+                <div class="aky-card mb-5">
+                    <div class="aky-card-header">
+                        <h4 class="aky-card-header__title">Commandes</h4>
+                    </div>
+                    <div class="aky-card-body">
+                        {% include '@AkyosShop/order/elements/_table.html.twig' with { els : baseUserShop.orders, route : 'order', 'fields' : { 'id' : 'Id', 'référence' : 'Ref' }} only %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

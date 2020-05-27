@@ -117,22 +117,24 @@ class CartService
         $this->em->flush();
     }
 
-    public function getTotal() : int
+    public function getTotal(Cart $cart = NULL) : int
     {
+        $cart = ($cart ?: $this->getCart());
         $total = 0;
 
-        foreach ($this->getCart()->getCartItems() as $cartItem) {
-            $total += $cartItem->getProduct()->getPrice();
+        foreach ($cart->getCartItems() as $cartItem) {
+            $total += $cartItem->getPrice() * $cartItem->getQty();
         }
 
         return $total;
     }
 
-    public function getTotalQty()
+    public function getTotalQty(Cart $cart = NULL)
     {
+        $cart = ($cart ?: $this->getCart());
         $total = 0;
 
-        foreach ($this->getCart()->getCartItems() as $cartItem) {
+        foreach ($cart->getCartItems() as $cartItem) {
             $total += $cartItem->getQty();
         }
 

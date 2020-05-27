@@ -76,10 +76,16 @@ class Order
      */
     private $cart;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderStatusLog::class, mappedBy="orderOfStatusLog", orphanRemoval=true)
+     * @ORM\OrderBy({"createdAt" = "DESC"})
+     */
+    private $orderStatusLogs;
+
     public function __construct()
     {
         $this->address = new ArrayCollection();
-        $this->cartItems = new ArrayCollection();
+        $this->orderStatusLogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -217,6 +223,37 @@ class Order
     public function setCart(Cart $cart): self
     {
         $this->cart = $cart;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderStatusLog[]
+     */
+    public function getOrderStatusLogs(): Collection
+    {
+        return $this->orderStatusLogs;
+    }
+
+    public function addOrderStatusLog(OrderStatusLog $orderStatusLog): self
+    {
+        if (!$this->orderStatusLogs->contains($orderStatusLog)) {
+            $this->orderStatusLogs[] = $orderStatusLog;
+            $orderStatusLog->setStatusLogOfOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderStatusLog(OrderStatusLog $orderStatusLog): self
+    {
+        if ($this->orderStatusLogs->contains($orderStatusLog)) {
+            $this->orderStatusLogs->removeElement($orderStatusLog);
+            // set the owning side to null (unless already changed)
+            if ($orderStatusLog->getStatusLogOfOrder() === $this) {
+                $orderStatusLog->setStatusLogOfOrder(null);
+            }
+        }
 
         return $this;
     }

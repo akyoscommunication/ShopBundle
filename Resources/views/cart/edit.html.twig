@@ -5,7 +5,7 @@
 {% block page_content %}
     <div class="aky-header-page">
         <h1 class="aky-header-page__title">Éditer {{ title }}</h1>
-        <a class="btn btn-outline-dark" href="{{ path(route~'_index') }}">Retour à la liste</a>
+        <a class="btn btn-outline-dark" href="{{ path('baseUserShop_show', { 'id' : el.client.id }) }}">Retour au client</a>
     </div>
 
     <div class="content" data-type="{{ entity is defined ? entity : '' }}" data-typeid="{{ el.id is defined ? el.id : '' }}">
@@ -17,23 +17,25 @@
                         {% set product = cartItemForm.vars.value.product %}
                         <div class="col-md-3">
                             {{ form_start(cartItemForm) }}
-                            <div class="card">
-                                <img class="card-img-top" src="{{ renderFileManagerUrl(product.thumbnail) }}" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ product }}</h5>
-                                    <p class="card-text">
-                                        {{ form_row(cartItemForm) }}
-                                    </p>
-                                    <button class="btn btn-outline-success">{{ button_label|default('Enregistrer') }}</button>
+                                <div class="card">
+                                    <img class="card-img-top" src="{{ renderFileManagerUrl(product.thumbnail) }}" alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ product }}</h5>
+                                        <p class="card-text">
+                                            {{ form_row(cartItemForm) }}
+                                        </p>
+                                        <button class="btn btn-outline-success">{{ button_label|default('Enregistrer') }}</button>
+                                    </div>
                                 </div>
-                            </div>
+                            {{ form_end(cartItemForm) }}
                         </div>
-                        {{ form_end(cartItemForm) }}
                     {% endfor %}
                 </div>
             </div>
             <div class="col-md-5">
-                <a class="btn btn-secondary btn-sm" href="{{ path('order_new', {'cart': el.id}) }}">Passer commande <i class="fas fa-cash-register"></i></a>
+                {% if el.cartItems is not empty %}
+                    <a class="btn btn-secondary btn-sm" href="{{ path('order_new', {'cart': el.id}) }}">Passer commande <i class="fas fa-cash-register"></i></a>
+                {% endif %}
 
                 {{ form_start(form) }}
                     {{ form_row(form) }}

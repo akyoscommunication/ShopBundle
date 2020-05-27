@@ -2,18 +2,24 @@
 
 namespace Akyos\ShopBundle\Form\Order;
 
-use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\Order;
-use Akyos\ShopBundle\Form\Cart\CartOrderType;
+use Akyos\ShopBundle\Entity\PaymentType;
+use Akyos\ShopBundle\Repository\PaymentTypeRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderTypeNew extends AbstractType
 {
+    /** @var PaymentTypeRepository */
+    private $paymentTypeRepository;
+
+    public function __construct(PaymentTypeRepository $paymentTypeRepository)
+    {
+        $this->paymentTypeRepository = $paymentTypeRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         /** @var Order $order */
@@ -21,7 +27,8 @@ class OrderTypeNew extends AbstractType
 
         $builder
             ->add('orderStatus', null, [
-                'label' => "Statut de la commande"
+                'label' => "Statut de la commande",
+                'block_prefix' => 'order_status',
             ])
             ->add('shippingMode', null, [
                 'label' => "Mode de livraison"
@@ -46,8 +53,13 @@ class OrderTypeNew extends AbstractType
                     return $choice->getTitle();
                 },
             ])
-            ->add('payment', null, [
+            ->add('paymentType', ChoiceType::class, [
                 'label' => "Paiement",
+                'mapped' => false,
+                'choices' => $this->paymentTypeRepository->findAll(),
+                'choice_label' => function (PaymentType $choice) {
+                    return $choice->getTitle();
+                }
             ])
         ;
     }

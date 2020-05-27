@@ -3,22 +3,23 @@
 namespace Akyos\ShopBundle\DataFixtures;
 
 use Akyos\ShopBundle\Entity\Payment;
+use Akyos\ShopBundle\Entity\PaymentType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class PaymentFixtures extends Fixture
+class PaymentTypeFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $payments = [
+        $paymentsTypes = [
             'Chèque',
             'Virement'
         ];
 
-        foreach ($payments as $p) {
-            $payment = new Payment();
-            $payment->setTitle($p);
-            $manager->persist($payment);
+        foreach ($paymentsTypes as $p) {
+            $paymentType = new PaymentType();
+            $paymentType->setTitle($p);
+            $manager->persist($paymentType);
         }
 
         $manager->flush();
@@ -29,6 +30,6 @@ class PaymentFixtures extends Fixture
      */
     public static function getGroups(): array
     {
-        return ['shop', 'order-status'];
+        return ['shop', 'order-payment-type'];
     }
 }
