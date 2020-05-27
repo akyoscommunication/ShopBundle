@@ -2,31 +2,29 @@
 
 namespace Akyos\ShopBundle\Form;
 
-use Akyos\ShopBundle\Entity\Order;
+use Akyos\ShopBundle\Entity\BaseUserShop;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderType extends AbstractType
+class BaseUserShopType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ref')
-            ->add('orderStatus')
-            ->add('shippingMode')
-            ->add('client')
-            ->add('address')
-            ->add('payment')
-            ->add('cartItems')
+            ->add('email')
+            ->add('roles')
+            ->add('password')
+            ->add('image')
+            ->add('createdAt')
+            ->add('updatedAt')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Order::class,
-            "translation_domain" => "forms",
+            'data_class' => BaseUserShop::class,
         ]);
     }
 }

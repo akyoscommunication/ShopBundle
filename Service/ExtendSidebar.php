@@ -24,6 +24,8 @@ class ExtendSidebar
                     <a href="'.$this->router->generate('product_index').'">Produits</a>
                     <a href="'.$this->router->generate('order_index').'">Commandes</a>
                     <a href="'.$this->router->generate('cart_index').'">Paniers</a>
+                    <a href="'.$this->router->generate('shopAddress_index').'">Adresses</a>
+                    <a href="'.$this->router->generate('baseUserShop_index').'">Clients</a>
                 </li>
             </ul>
         </li>

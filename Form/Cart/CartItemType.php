@@ -1,30 +1,29 @@
 <?php
 
-namespace Akyos\ShopBundle\Form;
+namespace Akyos\ShopBundle\Form\Cart;
 
-use Akyos\FileManagerBundle\Form\Type\FileManagerType;
+use Akyos\ShopBundle\Entity\CartItem;
 use Akyos\ShopBundle\Entity\Product;
+use Akyos\ShopBundle\Repository\ProductRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductType extends AbstractType
+class CartItemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('price')
-            ->add('thumbnail', FileManagerType::class)
-            ->add('published')
+            ->add('qty', IntegerType::class)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Product::class,
-            "translation_domain" => "forms",
+            'data_class' => CartItem::class
         ]);
     }
 }

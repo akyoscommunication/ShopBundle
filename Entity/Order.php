@@ -49,14 +49,32 @@ class Order
     private $orderStatus;
 
     /**
-     * @ORM\OneToMany(targetEntity=CartItem::class, mappedBy="orderOfItem")
-     */
-    private $cartItems;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $ref;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $message;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ShopAddress::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $invoiceAddress;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ShopAddress::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $deliveryAddress;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Cart::class, inversedBy="orderOfCart", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $cart;
 
     public function __construct()
     {
@@ -107,12 +125,12 @@ class Order
         return $this;
     }
 
-    public function getClient(): ?UserShopTrait
+    public function getClient(): ?BaseUserShop
     {
         return $this->client;
     }
 
-    public function setClient(?UserShopTrait $client): self
+    public function setClient(?BaseUserShop $client): self
     {
         $this->client = $client;
 
@@ -143,37 +161,6 @@ class Order
         return $this;
     }
 
-    /**
-     * @return Collection|CartItem[]
-     */
-    public function getCartItems(): Collection
-    {
-        return $this->cartItems;
-    }
-
-    public function addCartItem(CartItem $cartItem): self
-    {
-        if (!$this->cartItems->contains($cartItem)) {
-            $this->cartItems[] = $cartItem;
-            $cartItem->setOrderOfItem($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCartItem(CartItem $cartItem): self
-    {
-        if ($this->cartItems->contains($cartItem)) {
-            $this->cartItems->removeElement($cartItem);
-            // set the owning side to null (unless already changed)
-            if ($cartItem->getOrderOfItem() === $this) {
-                $cartItem->setOrderOfItem(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getRef(): ?string
     {
         return $this->ref;
@@ -182,6 +169,54 @@ class Order
     public function setRef(string $ref): self
     {
         $this->ref = $ref;
+
+        return $this;
+    }
+
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): self
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    public function getInvoiceAddress(): ?ShopAddress
+    {
+        return $this->invoiceAddress;
+    }
+
+    public function setInvoiceAddress(?ShopAddress $invoiceAddress): self
+    {
+        $this->invoiceAddress = $invoiceAddress;
+
+        return $this;
+    }
+
+    public function getDeliveryAddress(): ?ShopAddress
+    {
+        return $this->deliveryAddress;
+    }
+
+    public function setDeliveryAddress(?ShopAddress $deliveryAddress): self
+    {
+        $this->deliveryAddress = $deliveryAddress;
+
+        return $this;
+    }
+
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    public function setCart(Cart $cart): self
+    {
+        $this->cart = $cart;
 
         return $this;
     }

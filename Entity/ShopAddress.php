@@ -33,7 +33,67 @@ class ShopAddress
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type;
+    private $title;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $company;
+
+    /**
+     * @ORM\Column(type="string", length=13, nullable=true)
+     */
+    private $vatNumber;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $addressTwo;
+
+    /**
+     * @ORM\Column(type="string", length=6)
+     */
+    private $zip;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $country;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $homephone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cellphone;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $other;
 
     public function __construct()
     {
@@ -73,26 +133,170 @@ class ShopAddress
         return $this;
     }
 
-    public function getClient(): ?UserShopTrait
+    public function getClient(): ?BaseUserShop
     {
         return $this->client;
     }
 
-    public function setClient(?UserShopTrait $client): self
+    public function setClient(?BaseUserShop $client): self
     {
         $this->client = $client;
 
         return $this;
     }
 
-    public function getType(): ?string
+    public function getTitle(): ?string
     {
-        return $this->type;
+        return $this->title;
     }
 
-    public function setType(string $type): self
+    public function setTitle(string $title): self
     {
-        $this->type = $type;
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getCompany(): ?string
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?string $company): self
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    public function getVatNumber(): ?string
+    {
+        return $this->vatNumber;
+    }
+
+    public function setVatNumber(?string $vatNumber): self
+    {
+        $this->vatNumber = $vatNumber;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getAddressTwo(): ?string
+    {
+        return $this->addressTwo;
+    }
+
+    public function setAddressTwo(?string $addressTwo): self
+    {
+        $this->addressTwo = $addressTwo;
+
+        return $this;
+    }
+
+    public function getZip(): ?string
+    {
+        return $this->zip;
+    }
+
+    public function setZip(string $zip): self
+    {
+        $this->zip = $zip;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getHomephone(): ?string
+    {
+        return $this->homephone;
+    }
+
+    public function setHomephone(?string $homephone): self
+    {
+        $this->homephone = $homephone;
+
+        return $this;
+    }
+
+    public function getCellphone(): ?string
+    {
+        return $this->cellphone;
+    }
+
+    public function setCellphone(?string $cellphone): self
+    {
+        $this->cellphone = $cellphone;
+
+        return $this;
+    }
+
+    public function getOther(): ?string
+    {
+        return $this->other;
+    }
+
+    public function setOther(?string $other): self
+    {
+        $this->other = $other;
 
         return $this;
     }

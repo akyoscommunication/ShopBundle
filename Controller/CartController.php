@@ -6,14 +6,15 @@ use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\Cart;
 use Akyos\ShopBundle\Entity\CartItem;
 use Akyos\ShopBundle\Entity\Product;
+use Akyos\ShopBundle\Form\Cart\CartItemAddType;
+use Akyos\ShopBundle\Form\Cart\CartItemType;
 use Akyos\ShopBundle\Form\Handler\CartHandler;
-use Akyos\ShopBundle\Form\CartType;
+use Akyos\ShopBundle\Form\Handler\CartItemHandler;
 use Akyos\ShopBundle\Repository\CartRepository;
 use Akyos\ShopBundle\Service\Cart\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -47,29 +48,26 @@ class CartController extends AbstractController
                 'Id' => 'Id',
                 'Sauvegardé ?' => 'IsSaved',
                 'Client' => 'Client',
-            ]
+            ],
+            'button_add' => false
         ]);
     }
 
     /**
-     * @Route("/new", name="new", methods={"GET","POST"})
+     * @Route("/new/{client}", name="new", methods={"GET","POST"})
+     * @param BaseUserShop $client
      * @param Request $request
      * @param CartHandler $cartHandler
      * @return Response
      */
-    public function new(Request $request, CartHandler $cartHandler) : Response
+    public function new(BaseUserShop $client, Request $request, CartHandler $cartHandler) : Response
     {
         $cart = new Cart();
-        $form = $this->createForm(CartType::class, $cart);
-        if ($cartHandler->new($form, $request)) {
-            return $this->redirectToRoute('cart_index');
-        }
-        return $this->render('@AkyosCore/crud/new.html.twig', [
-            'form' => $form->createView(),
-            'title' => "Nouveau Cart",
-            'entity' => 'Cart',
-            'route' => 'cart'
-        ]);
+        $cart->setClient($client);
+        $cart->setIsSaved(false);
+
+        $cartHandler->new($cart);
+        return $this->redirectToRoute('cart_edit', ['id' => $cart->getId()]);
     }
 
     /**
@@ -88,29 +86,23 @@ class CartController extends AbstractController
      * @Route("/add-to-cart/{id}/{qty}", name="add-to-cart", methods={"GET"})
      * @param Product $product
      * @param CartService $cartService
-     * @param Request $request
-     * @param CartRepository $cartRepository
      * @param int $qty
      * @return Response
      */
-    public function addToCart(Product $product, CartService $cartService, Request $request, CartRepository $cartRepository, $qty = 1): Response
+    public function addToCart(Product $product, CartService $cartService, $qty = 1): Response
     {
-        $cartItem = new CartItem();
-        $cartItem->setProduct($product);
-        $cartItem->setQty($qty);
-
-        $cartService->add($cartItem);
+        $cartService->add($product, $qty);
 
         return $this->redirectToRoute('home');
     }
 
     /**
- * @Route("/remove-to-cart/{id}", name="remove-to-cart", methods={"POST"})
- * @param CartItem $cartItem
- * @param CartService $cartService
- * @param Request $request
- * @return Response
- */
+     * @Route("/remove-to-cart/{id}", name="remove-to-cart", methods={"POST"})
+     * @param CartItem $cartItem
+     * @param CartService $cartService
+     * @param Request $request
+     * @return Response
+     */
     public function removeToCart(CartItem $cartItem, CartService $cartService, Request $request)
     {
         $cartService->remove($cartItem);
@@ -138,21 +130,33 @@ class CartController extends AbstractController
      * @param Request $request
      * @param Cart $cart
      * @param CartHandler $cartHandler
+     * @param CartItemHandler $cartItemHandler
      * @return Response
      */
-    public function edit(Request $request, Cart $cart, CartHandler $cartHandler): Response
+    public function edit(Request $request, Cart $cart, CartHandler $cartHandler, CartItemHandler $cartItemHandler): Response
     {
-        $form = $this->createForm(CartType::class, $cart);
+        $form = $this->createForm(CartItemAddType::class);
 
-        if($cartHandler->edit($form, $request)) {
-            return new JsonResponse('valid');
+        $formCiArray = [];
+        foreach ($cart->getCartItems() as $k => $ci) {
+            $formCi = $this->get('form.factory')->createNamed("cartItem_{$ci->getId()}", CartItemType::class, $ci);
+            $formCiArray[] = $formCi->createView();
+
+            if ($cartItemHandler->new($formCi, $request)){
+                return $this->redirect($request->getUri());
+            }
         }
 
-        return $this->render('@AkyosCore/crud/edit.html.twig', [
+        if($cartHandler->edit($form, $request, $cart)) {
+            return $this->redirect($request->getUri());
+        }
+
+        return $this->render('@AkyosShop/cart/edit.html.twig', [
             'el' => $cart,
             'title' => 'Cart',
             'entity' => 'Cart',
             'route' => 'cart',
+            'formCiArray' => $formCiArray,
             'form' => $form->createView(),
         ]);
     }

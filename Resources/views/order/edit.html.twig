@@ -1,0 +1,24 @@
+{% extends '@AkyosCore/layout.html.twig' %}
+
+{% block title %}Editer {{ title }}{% endblock %}
+
+{% block page_content %}
+    <div class="aky-header-page">
+        <h1 class="aky-header-page__title">Éditer {{ title }}</h1>
+        <a class="btn btn-outline-dark" href="{{ path(route~'_index') }}">Retour à la liste</a>
+    </div>
+
+    <div class="content" data-type="{{ entity is defined ? entity : '' }}" data-typeid="{{ el.id is defined ? el.id : '' }}">
+        <div class="row">
+            <div class="col-md-7">
+                {{ form_start(form) }}
+                    {{ form_row(form) }}
+                    <button class="btn btn-outline-success">{{ button_label|default('Enregistrer') }}</button>
+                {{ form_end(form) }}
+            </div>
+            <div class="col-md-5">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

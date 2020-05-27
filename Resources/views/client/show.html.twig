@@ -1,0 +1,31 @@
+{% extends '@AkyosCore/layout.html.twig' %}
+
+{% block title %}Editer{% endblock %}
+
+{% block page_content %}
+    <div class="aky-header-page">
+        <h1 class="aky-header-page__title">Éditer <small>{{ baseUserShop.email }}</small></h1>
+        <a class="btn btn-outline-dark" href="{{ path(route~'_index') }}">Retour à la liste</a>
+    </div>
+
+    <div class="content" data-type="{{ entity is defined ? entity : '' }}" data-typeid="{{ el.id is defined ? el.id : '' }}">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Panier</h4>
+            </div>
+            <div class="card-body">
+                {% include '@AkyosShop/cart/elements/_table.html.twig' with { els : baseUserShop.carts, route : 'cart', 'fields' : { 'id' : 'Id' }} only %}
+            </div>
+        </div>
+
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Commandes</h4>
+            </div>
+            <div class="card-body">
+                {% include '@AkyosShop/order/elements/_table.html.twig' with { els : baseUserShop.orders, route : 'order', 'fields' : { 'id' : 'Id', 'référence' : 'Ref' }} only %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

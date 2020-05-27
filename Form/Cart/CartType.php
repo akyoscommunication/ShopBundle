@@ -1,7 +1,8 @@
 <?php
 
-namespace Akyos\ShopBundle\Form;
+namespace Akyos\ShopBundle\Form\Cart;
 
+use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\Cart;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,9 +13,11 @@ class CartType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cartItems')
-            ->add('client')
+            ->add('cartItems', CartOrderType::class, [
+                'label' => "Panier",
+            ])
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

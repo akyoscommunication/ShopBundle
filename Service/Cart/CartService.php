@@ -5,6 +5,7 @@ namespace Akyos\ShopBundle\Service\Cart;
 use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\Cart;
 use Akyos\ShopBundle\Entity\CartItem;
+use Akyos\ShopBundle\Entity\Product;
 use Akyos\ShopBundle\Repository\CartItemRepository;
 use Akyos\ShopBundle\Repository\CartRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,14 +84,21 @@ class CartService
         }
     }
 
-    public function add(CartItem $cartItem)
+    public function add(Product $product, $qty, Cart $cart = null)
     {
-        $existInCart = $this->cartItemRepository->findOneBy(['cart' => $this->getCart(), 'product' => $cartItem->getProduct()]);
+        $cart = ($cart ?: $this->getCart());
+        $existInCart = $this->cartItemRepository->findOneBy(['cart' => $cart, 'product' => $product]);
 
         if ($existInCart) {
-            $existInCart->setQty($existInCart->getQty() + $cartItem->getQty());
+            $existInCart->setQty($existInCart->getQty() + $qty);
         } else {
-            $this->getCart()->addCartItem($cartItem);
+            $cartItem = new CartItem();
+            $cartItem->setCart($cart);
+            $cartItem->setPrice($product->getPrice());
+            $cartItem->setProduct($product);
+            $cartItem->setQty($qty);
+
+            $cart->addCartItem($cartItem);
             $this->em->persist($cartItem);
         }
 

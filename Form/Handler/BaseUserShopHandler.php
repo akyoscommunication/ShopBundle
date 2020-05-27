@@ -2,13 +2,13 @@
 
 namespace Akyos\ShopBundle\Form\Handler;
 
-use Akyos\ShopBundle\Entity\Order;
+use Akyos\ShopBundle\Entity\BaseUserShop;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 
-class OrderHandler extends AbstractController
+class BaseUserShopHandler extends AbstractController
 {
     private $em;
 
@@ -21,8 +21,8 @@ class OrderHandler extends AbstractController
     {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $order = $form->getData();
-            $this->em->persist($order);
+            $baseUserShop = $form->getData();
+            $this->em->persist($baseUserShop);
             $this->em->flush();
             return true;
         }
@@ -33,17 +33,16 @@ class OrderHandler extends AbstractController
     {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->getData()->getCartItems()->getValues());
             $this->em->flush();
             return true;
         }
         return false;
     }
 
-    public function delete(Order $order, Request $request)
+    public function delete(BaseUserShop $baseUserShop, Request $request)
     {
-        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->request->get('_token'))) {
-            $this->em->remove($order);
+        if ($this->isCsrfTokenValid('delete'.$baseUserShop->getId(), $request->request->get('_token'))) {
+            $this->em->remove($baseUserShop);
             $this->em->flush();
         }
     }

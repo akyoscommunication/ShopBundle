@@ -1,0 +1,25 @@
+{% extends '@AkyosCore/layout.html.twig' %}
+{% form_theme form '@AkyosShop/order/themes/new.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+    <div class="aky-header-page">
+        <h1 class="aky-header-page__title">{{ title }}</h1>
+        <a class="btn btn-outline-dark" href="{{ path(route~'_index') }}">Retour à la liste</a>
+    </div>
+
+    <div class="content">
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-outline-success">{{ button_label|default('Enregistrer') }}</button>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/akyosshop/main.js') }}"></script>
+{% endblock %}

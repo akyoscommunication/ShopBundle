@@ -2,10 +2,16 @@
 
 namespace Akyos\ShopBundle\Controller;
 
+use Akyos\ShopBundle\Entity\Cart;
 use Akyos\ShopBundle\Entity\Order;
+use Akyos\ShopBundle\Entity\ShopAddress;
+use Akyos\ShopBundle\Form\Address\ShopAddressType;
+use Akyos\ShopBundle\Form\Cart\CartType;
 use Akyos\ShopBundle\Form\Handler\OrderHandler;
-use Akyos\ShopBundle\Form\OrderType;
+use Akyos\ShopBundle\Form\Handler\ShopAddressHandler;
+use Akyos\ShopBundle\Form\Order\OrderTypeNew;
 use Akyos\ShopBundle\Repository\OrderRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,26 +47,44 @@ class OrderController extends AbstractController
             'route' => 'order',
             'fields' => [
                 'Id' => 'Id',
-                'Référence' => 'ref',
-            ]
+                'Référence' => 'Ref',
+            ],
+            'button_add' => false
         ]);
     }
 
     /**
-     * @Route("/new", name="new", methods={"GET","POST"})
+     * @Route("/new/{cart}", name="new", methods={"GET","POST"})
+     *
+     * @param Cart $cart
      * @param Request $request
      * @param OrderHandler $orderHandler
+     *
+     * @param ShopAddressHandler $shopAddressHandler
      * @return Response
      */
-    public function new(Request $request, OrderHandler $orderHandler) : Response
+    public function new(Cart $cart, Request $request, OrderHandler $orderHandler, ShopAddressHandler $shopAddressHandler) : Response
     {
         $order = new Order();
-        $form = $this->createForm(OrderType::class, $order);
-        if ($orderHandler->new($form, $request)) {
-            return $this->redirectToRoute('order_index');
+        $order->setCart($cart);
+        $order->setClient($cart->getClient());
+        $order->setRef(substr(uniqid('', true), -5));
+
+        $invoiceAddress = new ShopAddress();
+        $invoiceAddress->setClient($cart->getClient());
+
+        $formAddress = $this->createForm(ShopAddressType::class, $invoiceAddress);
+        if ($shopAddressHandler->new($formAddress, $request)) {
+            return $this->redirect($request->getUri());
         }
-        return $this->render('@AkyosCore/crud/new.html.twig', [
+
+        $form = $this->createForm(OrderTypeNew::class, $order);
+        if ($orderHandler->new($form, $request)) {
+            return $this->redirectToRoute('baseUserShop_show', ['id' => $cart->getClient()]);
+        }
+        return $this->render('@AkyosShop/order/new.html.twig', [
             'form' => $form->createView(),
+            'formAddress' => $formAddress->createView(),
             'title' => "Nouveau Order",
             'entity' => 'Order',
             'route' => 'order'
@@ -84,21 +108,31 @@ class OrderController extends AbstractController
      * @param Request $request
      * @param Order $order
      * @param OrderHandler $orderHandler
+     * @param ShopAddressHandler $shopAddressHandler
      * @return Response
      */
-    public function edit(Request $request, Order $order, OrderHandler $orderHandler): Response
+    public function edit(Request $request, Order $order, OrderHandler $orderHandler, ShopAddressHandler $shopAddressHandler): Response
     {
-        $form = $this->createForm(OrderType::class, $order);
+        $invoiceAddress = new ShopAddress();
+        $invoiceAddress->setClient($order->getClient());
+
+        $formAddress = $this->createForm(ShopAddressType::class, $invoiceAddress);
+        if ($shopAddressHandler->new($formAddress, $request)) {
+            return $this->redirect($request->getUri());
+        }
+
+        $form = $this->createForm(OrderTypeNew::class, $order);
 
         if($orderHandler->edit($form, $request)) {
             return new JsonResponse('valid');
         }
 
-        return $this->render('@AkyosCore/crud/edit.html.twig', [
+        return $this->render('@AkyosShop/order/new.html.twig', [
             'el' => $order,
             'title' => 'Order',
             'entity' => 'Order',
             'route' => 'order',
+            'formAddress' => $formAddress->createView(),
             'form' => $form->createView(),
         ]);
     }

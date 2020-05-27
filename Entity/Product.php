@@ -39,6 +39,11 @@ class Product
      */
     private $orderOfProduct;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $thumbnail;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -95,5 +100,17 @@ class Product
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(?string $thumbnail): self
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
     }
 }

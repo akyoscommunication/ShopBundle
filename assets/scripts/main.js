@@ -1,8 +1,8 @@
-import FormFields from "./modules/FormFields";
+import OrderNew from "./modules/Order/new";
 
 class Form {
     static init() {
-        FormFields.init();
+        new OrderNew()
     }
 }
 
