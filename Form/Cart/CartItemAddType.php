@@ -2,9 +2,8 @@
 
 namespace Akyos\ShopBundle\Form\Cart;
 
-use Akyos\ShopBundle\Entity\CartItem;
-use Akyos\ShopBundle\Entity\Product;
-use Akyos\ShopBundle\Repository\ProductRepository;
+use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

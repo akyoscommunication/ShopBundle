@@ -18,8 +18,8 @@ class CartItem
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=BaseProduct::class)
+     * @ORM\JoinColumn(name="id", referencedColumnName="slug", nullable=false)
      */
     private $product;
 
@@ -48,12 +48,12 @@ class CartItem
         return $this->id;
     }
 
-    public function getProduct(): ?Product
+    public function getProduct(): ?BaseProduct
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(?BaseProduct $product): self
     {
         $this->product = $product;
 

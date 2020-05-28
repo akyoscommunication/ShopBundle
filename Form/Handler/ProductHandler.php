@@ -2,7 +2,7 @@
 
 namespace Akyos\ShopBundle\Form\Handler;
 
-use Akyos\ShopBundle\Entity\Product;
+use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -2,27 +2,24 @@
 
 namespace Akyos\ShopBundle\Entity;
 
-use Akyos\ShopBundle\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\MappedSuperclass;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @MappedSuperclass
- * @ORM\Entity(repositoryClass=ProductRepository::class)
+ * @ORM\MappedSuperclass
  */
-class Product
+class BaseProduct
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -39,11 +36,6 @@ class Product
      */
     private $thumbnail;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -52,6 +44,18 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

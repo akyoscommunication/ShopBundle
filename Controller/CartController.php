@@ -5,7 +5,7 @@ namespace Akyos\ShopBundle\Controller;
 use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\Cart;
 use Akyos\ShopBundle\Entity\CartItem;
-use Akyos\ShopBundle\Entity\Product;
+use App\Entity\Product;
 use Akyos\ShopBundle\Form\Cart\CartItemAddType;
 use Akyos\ShopBundle\Form\Cart\CartItemType;
 use Akyos\ShopBundle\Form\Handler\CartHandler;
@@ -83,7 +83,7 @@ class CartController extends AbstractController
     }
 
     /**
-     * @Route("/add-to-cart/{id}/{qty}", name="add-to-cart", methods={"GET"})
+     * @Route("/add-to-cart/{id}/{qty}", name="add-to-cart", methods={"GET"}, options={"expose"=true})
      * @param Product $product
      * @param CartService $cartService
      * @param int $qty
@@ -97,7 +97,7 @@ class CartController extends AbstractController
     }
 
     /**
-     * @Route("/remove-to-cart/{id}", name="remove-to-cart", methods={"POST"})
+     * @Route("/remove-to-cart/{id}", name="remove-to-cart", methods={"POST"}, options={"expose"=true})
      * @param CartItem $cartItem
      * @param CartService $cartService
      * @param Request $request
@@ -111,7 +111,7 @@ class CartController extends AbstractController
     }
 
     /**
-     * @Route("/update-cart/{id}/{qty}", name="update-cart", methods={"POST"})
+     * @Route("/update-cart/{id}/{qty}", name="update-cart", methods={"POST"}, options={"expose"=true})
      * @param CartItem $cartItem
      * @param CartService $cartService
      * @param Request $request
