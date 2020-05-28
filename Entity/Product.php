@@ -35,11 +35,6 @@ class Product
     private $published;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="products")
-     */
-    private $orderOfProduct;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $thumbnail;
@@ -81,18 +76,6 @@ class Product
     public function setPublished(bool $published): self
     {
         $this->published = $published;
-
-        return $this;
-    }
-
-    public function getOrderOfProduct(): ?Order
-    {
-        return $this->orderOfProduct;
-    }
-
-    public function setOrderOfProduct(?Order $orderOfProduct): self
-    {
-        $this->orderOfProduct = $orderOfProduct;
 
         return $this;
     }

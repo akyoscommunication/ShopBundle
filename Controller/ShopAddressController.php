@@ -16,7 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 
 /**
- * @Route("/shopAddress", name="shopAddress_")
+ * @Route("/admin/adresses", name="shopAddress_")
  */
 class ShopAddressController extends AbstractController
 {

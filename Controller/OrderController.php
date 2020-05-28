@@ -24,7 +24,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 
 /**
- * @Route("/order", name="order_")
+ * @Route("/admin/panier", name="order_")
  */
 class OrderController extends AbstractController
 {

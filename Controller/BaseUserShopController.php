@@ -15,7 +15,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 
 /**
- * @Route("/baseUserShop", name="baseUserShop_")
+ * @Route("/admin/client", name="baseUserShop_")
  */
 class BaseUserShopController extends AbstractController
 {

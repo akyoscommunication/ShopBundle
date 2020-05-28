@@ -15,7 +15,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 
 /**
- * @Route("/product", name="product_")
+ * @Route("/admin/produits", name="product_")
  */
 class ProductController extends AbstractController
 {

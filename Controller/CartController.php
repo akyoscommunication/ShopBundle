@@ -20,7 +20,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 
 /**
- * @Route("/cart", name="cart_")
+ * @Route("/admin/panier", name="cart_")
  */
 class CartController extends AbstractController
 {
