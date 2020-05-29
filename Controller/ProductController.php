@@ -2,10 +2,10 @@
 
 namespace Akyos\ShopBundle\Controller;
 
-use App\Entity\Product;
+use App\Entity\Shop\Product;
 use Akyos\ShopBundle\Form\Handler\ProductHandler;
 use Akyos\ShopBundle\Form\ProductType;
-use App\Repository\ProductRepository;
+use App\Repository\Shop\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

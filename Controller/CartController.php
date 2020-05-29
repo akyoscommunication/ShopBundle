@@ -5,7 +5,7 @@ namespace Akyos\ShopBundle\Controller;
 use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\Cart;
 use Akyos\ShopBundle\Entity\CartItem;
-use App\Entity\Product;
+use App\Entity\Shop\Product;
 use Akyos\ShopBundle\Form\Cart\CartItemAddType;
 use Akyos\ShopBundle\Form\Cart\CartItemType;
 use Akyos\ShopBundle\Form\Handler\CartHandler;

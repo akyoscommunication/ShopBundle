@@ -5,7 +5,7 @@ namespace Akyos\ShopBundle\Service\Cart;
 use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\Cart;
 use Akyos\ShopBundle\Entity\CartItem;
-use App\Entity\Product;
+use App\Entity\Shop\Product;
 use Akyos\ShopBundle\Repository\CartItemRepository;
 use Akyos\ShopBundle\Repository\CartRepository;
 use Doctrine\ORM\EntityManagerInterface;

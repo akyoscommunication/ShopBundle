@@ -1,8 +1,8 @@
 <?php
 
-namespace Akyos\ShopBundle\Entity;
+namespace App\Entity\Shop;
 
-use App\Repository\ProductRepository;
+use App\Repository\Shop\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

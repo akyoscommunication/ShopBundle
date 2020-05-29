@@ -3,7 +3,7 @@
 namespace Akyos\ShopBundle\Form;
 
 use Akyos\FileManagerBundle\Form\Type\FileManagerType;
-use App\Entity\Product;
+use App\Entity\Shop\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
