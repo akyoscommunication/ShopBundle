@@ -3,6 +3,7 @@
 namespace Akyos\ShopBundle\Entity;
 
 use Akyos\ShopBundle\Repository\CartItemRepository;
+use App\Entity\Shop\Product;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,8 +19,8 @@ class CartItem
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=BaseProduct::class)
-     * @ORM\JoinColumn(name="id", referencedColumnName="slug", nullable=false)
+     * @ORM\ManyToOne(targetEntity=App\Entity\Shop\Product::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $product;
 
@@ -48,12 +49,12 @@ class CartItem
         return $this->id;
     }
 
-    public function getProduct(): ?BaseProduct
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(?BaseProduct $product): self
+    public function setProduct(?Product $product): self
     {
         $this->product = $product;
 

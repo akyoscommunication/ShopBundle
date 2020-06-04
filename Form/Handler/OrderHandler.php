@@ -4,6 +4,7 @@ namespace Akyos\ShopBundle\Form\Handler;
 
 use Akyos\ShopBundle\Entity\Order;
 use Akyos\ShopBundle\Entity\Payment;
+use Akyos\ShopBundle\Service\Payment\PaypalApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,10 +13,12 @@ use Symfony\Component\Form\FormInterface;
 class OrderHandler extends AbstractController
 {
     private $em;
+    private $paypalApiService;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, PaypalApiService $paypalApiService)
     {
         $this->em = $entityManager;
+        $this->paypalApiService = $paypalApiService;
     }
 
     public function new(FormInterface $form, Request $request): bool
@@ -24,6 +27,14 @@ class OrderHandler extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $order = $form->getData();
             $paymentType = $form->get('paymentType')->getData();
+
+            switch ($paymentType->getTitle()) {
+                case 'Paypal':
+                    $this->paypalApiService->createPayement($order);
+                    break;
+                default:
+                    break;
+            }
 
             $payment = new Payment();
             $payment->setPaymentType($paymentType);

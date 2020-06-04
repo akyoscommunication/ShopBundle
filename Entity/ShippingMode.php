@@ -29,6 +29,11 @@ class ShippingMode
      */
     private $orders;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ShopOptions::class, inversedBy="paypalShippingMode")
+     */
+    private $shopOptions;
+
     public function __construct()
     {
         $this->paymentTypes = new ArrayCollection();
@@ -93,6 +98,18 @@ class ShippingMode
                 $order->setShippingMode(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShopOptions(): ?ShopOptions
+    {
+        return $this->shopOptions;
+    }
+
+    public function setShopOptions(?ShopOptions $shopOptions): self
+    {
+        $this->shopOptions = $shopOptions;
 
         return $this;
     }

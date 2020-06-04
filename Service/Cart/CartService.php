@@ -91,18 +91,18 @@ class CartService
 
         if ($existInCart) {
             $existInCart->setQty($existInCart->getQty() + $qty);
+            $this->em->flush();
         } else {
             $cartItem = new CartItem();
             $cartItem->setCart($cart);
             $cartItem->setPrice($product->getPrice());
             $cartItem->setProduct($product);
             $cartItem->setQty($qty);
-
             $cart->addCartItem($cartItem);
             $this->em->persist($cartItem);
+            $this->em->flush();
         }
 
-        $this->em->flush();
     }
 
     public function update(CartItem $cartItem, int $qty)

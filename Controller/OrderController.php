@@ -14,6 +14,7 @@ use Akyos\ShopBundle\Form\Handler\ShopAddressHandler;
 use Akyos\ShopBundle\Form\Order\OrderTypeNew;
 use Akyos\ShopBundle\Repository\OrderRepository;
 use Akyos\ShopBundle\Service\Mailer;
+use Akyos\ShopBundle\Service\Payment\PaypalApiService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -170,5 +171,16 @@ class OrderController extends AbstractController
     {
         $orderHandler->delete($order, $request);
         return $this->redirectToRoute('order_index');
+    }
+
+    /**
+     * @Route("/capture/payement", name="capture", methods={"GET"})
+     * @param Request $request
+     * @param PaypalApiService $paypalApiService
+     * @return Response
+     */
+    public function capture(Request $request, PaypalApiService $paypalApiService) : Response
+    {
+            $paypalApiService->capturePayment($request);
     }
 }

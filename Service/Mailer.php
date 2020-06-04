@@ -31,7 +31,7 @@ class Mailer
         $this->twig = $twig;
     }
 
-    public function sendMessage($to, $subject, $template, $el, $sender = NULL, $bcc = NULL, $attachment = NULL, array $options = NULL)
+    public function sendMessage($to, $subject, $template, $el, $body = NULL, $sender = NULL, $bcc = NULL, $attachment = NULL, array $options = NULL)
     {
         $coreOptions = $this->coreOptionsRepository->findAll();
         if($coreOptions) {
@@ -51,6 +51,7 @@ class Mailer
             ->setTo($to)
             ->setBody($this->twig->render($template, [
                 'el' => $el,
+                'body' => $body
             ]), 'text/html'
             );
 

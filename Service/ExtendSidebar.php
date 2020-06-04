@@ -32,4 +32,10 @@ class ExtendSidebar
         ';
         return new Response($template);
     }
+
+    public function getOptionsTemplate($route)
+    {
+        $template = '<li class="'.(strpos($route,"shop_options") !== false ? "active" : "").'"><a href="'.$this->router->generate('shop_options').'">ShopBundle</a></li>';
+        return new Response($template);
+    }
 }

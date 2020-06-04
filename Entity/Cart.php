@@ -31,7 +31,7 @@ class Cart
     private $client;
 
     /**
-     * @ORM\OneToMany(targetEntity=CartItem::class, mappedBy="cart")
+     * @ORM\OneToMany(targetEntity=CartItem::class, mappedBy="cart", orphanRemoval=true)
      */
     private $cartItems;
 
