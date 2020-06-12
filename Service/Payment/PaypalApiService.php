@@ -4,6 +4,8 @@
 namespace Akyos\ShopBundle\Service\Payment;
 
 use Akyos\ShopBundle\Entity\ShopOptions;
+use Akyos\ShopBundle\Repository\OrderRepository;
+use Akyos\ShopBundle\Repository\OrderStatusRepository;
 use Akyos\ShopBundle\Repository\ShopOptionsRepository;
 use Akyos\ShopBundle\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,13 +22,17 @@ class PaypalApiService
     private $shopOptions;
     private $mailer;
     private $url;
+    private $orderRepository;
+    private $orderStatusRepository;
 
-    public function __construct(EntityManagerInterface $em, ShopOptionsRepository $shopOptions, Mailer $mailer)
+    public function __construct(EntityManagerInterface $em, ShopOptionsRepository $shopOptions, Mailer $mailer, OrderRepository $orderRepository, OrderStatusRepository $orderStatusRepository)
     {
         $this->em = $em;
         $this->shopOptions = $shopOptions->findAll()[0];
         $this->mailer = $mailer;
         $this->url =  ($this->shopOptions->getPaypalSandbox() == true ? 'https://api.sandbox.paypal.com' : 'https://api.paypal.com');
+        $this->orderRepository = $orderRepository;
+        $this->orderStatusRepository = $orderStatusRepository;
     }
 
     public function getAccessToken()
@@ -111,10 +117,9 @@ class PaypalApiService
                 'Accept-Language' => 'en_US'
             ],
         ]);
+        $order->setApiPayementId(json_decode($response->getContent(), true)['id']);
+        $this->em->flush();
         $this->mailer->sendMessage($order->getClient()->getEmail(), 'Demande de payement de la commande N°'.$order->getRef(), '@AkyosShop/email/default.html.twig', $order,'Lien pour le payement: '.json_decode($response->getContent(), true)['links'][1]['href']);
-//        dump($this->shopOptions->getPaypalAccessToken());
-//        dump($order_json);
-//        dd(json_decode($response->getContent()));
     }
 
     public function capturePayment(Request $request)
@@ -126,6 +131,14 @@ class PaypalApiService
                 'Authorization' => 'Bearer ' . $this->shopOptions->getPaypalAccessToken(),
             ],
         ]);
-        dd(json_decode($response->getContent()));
+        $order = $this->orderRepository->findOneBy(['apiPayementId' => $request->get('token')]);
+
+        if(json_decode($response->getContent(), true)['status'] == 'COMPLETED'){
+            $order->setOrderStatus($this->orderStatusRepository->findOneBy(['id' => 4]));
+        }else{
+            $order->setOrderStatus($this->orderStatusRepository->findOneBy(['id' => 3]));
+        }
+        $this->em->flush();
+        return $order;
     }
 }

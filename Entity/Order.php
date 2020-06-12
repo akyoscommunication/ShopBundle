@@ -82,6 +82,11 @@ class Order
      */
     private $orderStatusLogs;
 
+    /**
+     * @ORM\Column(type="string", nullable=true, length=255)
+     */
+    private $apiPayementId;
+
     public function __construct()
     {
         $this->address = new ArrayCollection();
@@ -254,6 +259,18 @@ class Order
                 $orderStatusLog->setStatusLogOfOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApiPayementId(): ?string
+    {
+        return $this->apiPayementId;
+    }
+
+    public function setApiPayementId(?string $apiPayementId): self
+    {
+        $this->apiPayementId = $apiPayementId;
 
         return $this;
     }

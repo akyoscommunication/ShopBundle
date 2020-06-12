@@ -181,6 +181,11 @@ class OrderController extends AbstractController
      */
     public function capture(Request $request, PaypalApiService $paypalApiService) : Response
     {
-            $paypalApiService->capturePayment($request);
+        $body = 'TEST';
+        $order = $paypalApiService->capturePayment($request);
+        return $this->render('@AkyosShop/email/default.html.twig', [
+            'el' => $order,
+            'body' => $body
+        ]);
     }
 }
