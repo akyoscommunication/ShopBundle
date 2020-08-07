@@ -2,7 +2,7 @@
 
 namespace Akyos\ShopBundle\Form\Handler;
 
-use Akyos\ShopBundle\Entity\Order;
+use App\Entity\Shop\Order;
 use Akyos\ShopBundle\Entity\Payment;
 use Akyos\ShopBundle\Service\Payment\PaypalApiService;
 use Doctrine\ORM\EntityManagerInterface;

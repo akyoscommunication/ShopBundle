@@ -3,6 +3,7 @@
 namespace Akyos\ShopBundle\Entity;
 
 use Akyos\CoreBundle\Entity\BaseUser;
+use App\Entity\Shop\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +25,7 @@ class BaseUserShop extends BaseUser
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Akyos\ShopBundle\Entity\Order", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="App\Entity\Shop\Order", mappedBy="client")
      */
     private $orders;
 
@@ -37,6 +38,16 @@ class BaseUserShop extends BaseUser
      * @ORM\OneToMany(targetEntity="Akyos\ShopBundle\Entity\Cart", mappedBy="client", orphanRemoval=true)
      */
     private $carts;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $verifyToken;
 
     public function __construct()
     {
@@ -146,5 +157,29 @@ class BaseUserShop extends BaseUser
     public function __toString()
     {
         return $this->email;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getVerifyToken(): ?string
+    {
+        return $this->verifyToken;
+    }
+
+    public function setVerifyToken(?string $verifyToken): self
+    {
+        $this->verifyToken = $verifyToken;
+
+        return $this;
     }
 }

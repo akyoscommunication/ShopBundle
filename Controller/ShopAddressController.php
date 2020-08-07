@@ -5,7 +5,7 @@ namespace Akyos\ShopBundle\Controller;
 use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\ShopAddress;
 use Akyos\ShopBundle\Form\Handler\ShopAddressHandler;
-use Akyos\ShopBundle\Form\Address\ShopAddressType;
+use Akyos\ShopBundle\Form\Type\Address\ShopAddressType;
 use Akyos\ShopBundle\Repository\ShopAddressRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
-
 
 /**
  * @Route("/admin/adresses", name="shopAddress_")

@@ -32,6 +32,11 @@ class OrderStatusFixtures extends Fixture
                 'email' => '',
             ],
             [
+                'title' => 'Expédié',
+                'color' => '#00b894',
+                'email' => '',
+            ],
+            [
                 'title' => 'Livrée',
                 'color' => '#00b894',
                 'email' => '',

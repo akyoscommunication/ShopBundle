@@ -3,6 +3,7 @@
 namespace Akyos\ShopBundle\Entity;
 
 use Akyos\ShopBundle\Repository\OrderStatusLogRepository;
+use App\Entity\Shop\Order;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 

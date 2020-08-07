@@ -4,7 +4,7 @@
 namespace Akyos\ShopBundle\Service\Payment;
 
 use Akyos\ShopBundle\Entity\ShopOptions;
-use Akyos\ShopBundle\Repository\OrderRepository;
+use App\Repository\Shop\OrderRepository;
 use Akyos\ShopBundle\Repository\OrderStatusRepository;
 use Akyos\ShopBundle\Repository\ShopOptionsRepository;
 use Akyos\ShopBundle\Service\Mailer;

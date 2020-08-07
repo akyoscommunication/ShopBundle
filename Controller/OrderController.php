@@ -3,23 +3,23 @@
 namespace Akyos\ShopBundle\Controller;
 
 use Akyos\ShopBundle\Entity\Cart;
-use Akyos\ShopBundle\Entity\Order;
-use Akyos\ShopBundle\Entity\OrderStatus;
+use Akyos\ShopBundle\Form\Type\Order\OrderExportType;
+use Akyos\ShopBundle\Service\Cart\CartService;
+use App\Entity\Shop\Order;
 use Akyos\ShopBundle\Entity\OrderStatusLog;
 use Akyos\ShopBundle\Entity\ShopAddress;
-use Akyos\ShopBundle\Form\Address\ShopAddressType;
-use Akyos\ShopBundle\Form\Cart\CartType;
+use Akyos\ShopBundle\Form\Type\Address\ShopAddressType;
 use Akyos\ShopBundle\Form\Handler\OrderHandler;
 use Akyos\ShopBundle\Form\Handler\ShopAddressHandler;
-use Akyos\ShopBundle\Form\Order\OrderTypeNew;
-use Akyos\ShopBundle\Repository\OrderRepository;
+use Akyos\ShopBundle\Form\Type\Order\OrderTypeNew;
+use App\Repository\Shop\OrderRepository;
 use Akyos\ShopBundle\Service\Mailer;
 use Akyos\ShopBundle\Service\Payment\PaypalApiService;
-use Exception;
+use League\Csv\Writer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -30,13 +30,15 @@ use Knp\Component\Pager\PaginatorInterface;
 class OrderController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET","POST"})
      * @param OrderRepository $orderRepository
      * @param PaginatorInterface $paginator
      * @param Request $request
+     * @param CartService $cartService
+     *
      * @return Response
      */
-    public function index(OrderRepository $orderRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(OrderRepository $orderRepository, PaginatorInterface $paginator, Request $request, CartService $cartService): Response
     {
         $els = $paginator->paginate(
             $orderRepository->createQueryBuilder('a')->getQuery(),
@@ -44,7 +46,50 @@ class OrderController extends AbstractController
             10
         );
 
-        return $this->render('@AkyosCore/crud/index.html.twig', [
+        $exportForm = $this->createForm(OrderExportType::class);
+        $exportForm->handleRequest($request);
+        if ($exportForm->isSubmitted() && $exportForm->isValid()) {
+            $format = 'Y-m-d';
+            /** @var \DateTime $beginAt */
+            /** @var \DateTime $endAt */
+            $beginAt = $exportForm->get('beginAt')->getData();
+            $endAt = $exportForm->get('endAt')->getData();
+            $orders = $orderRepository->findByTimeRange($beginAt, $endAt);
+            $filename = 'orders-'.$beginAt->format($format).'-'.$endAt->format($format).'.csv';
+            $csv = Writer::createFromString('');
+
+            $records = [
+                [
+                    'Date de création',
+                    'Client',
+                    'Référence de la commande',
+                    'HT',
+                    'TTC'
+                ]
+            ];
+
+            foreach ($orders as $order) {
+                $total = $cartService->getTotal($order->getCart());
+
+                $records[] = [
+                    $order->getCreatedAt()->format($format),
+                    $order->getClient()->getEmail(),
+                    $order->getRef(),
+                    ($total/1.2),
+                    $total,
+                ];
+            }
+
+            $csv->insertAll($records);
+
+            $response = new Response($csv->getContent());
+            $response->headers->set('Content-Type', 'text/csv');
+            $response->headers->set('Content-Disposition', 'attachment;filename='.$filename);
+
+            return $response;
+        }
+
+        return $this->render('@AkyosShop/order/index.html.twig', [
             'els' => $els,
             'title' => 'Orders',
             'entity' => 'Order',
@@ -52,8 +97,10 @@ class OrderController extends AbstractController
             'fields' => [
                 'Id' => 'Id',
                 'Référence' => 'Ref',
+                'Création' => 'CreatedAt',
             ],
-            'button_add' => false
+            'button_add' => false,
+            'exportForm' => $exportForm->createView(),
         ]);
     }
 
@@ -100,28 +147,32 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/{statusLog}", name="resendmail_status", methods={"GET"})
+     * @Route("/resend-mail/status/{statusLog}", name="resendmail_status", methods={"GET"})
      * @param OrderStatusLog $statusLog
      * @param Mailer $mailer
      *
-     * @return bool
+     * @param Request $request
+     *
+     * @return RedirectResponse
      */
-    public function resendMailStatus(OrderStatusLog $statusLog, Mailer $mailer)
+    public function resendMailStatus(OrderStatusLog $statusLog, Mailer $mailer, Request $request)
     {
         $order = $statusLog->getOrderOfStatusLog();
         $orderStatusMail = $statusLog->getOrderStatus()->getOrderEmail();
-
-        return $mailer->sendMessage($order->getClient()->getEmail(), $orderStatusMail->getSubject(), $orderStatusMail->getTemplate(), $order);
+        if ($mailer->sendMessage($order->getClient()->getEmail(), $orderStatusMail->getSubject(), $orderStatusMail->getTemplate(), $order)) {
+            $this->addFlash('success', "L'email à bien été renvoyé.");
+            return $this->redirect($request->get('callback'));
+        }
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/detail/{id}", name="show", methods={"GET"})
      * @param Order $order
      * @return Response
      */
     public function show(Order $order): Response
     {
-        return $this->render('order/show.html.twig', [
+        return $this->render('@AkyosShop/order/show.html.twig', [
             'order' => $order,
         ]);
     }

@@ -28,28 +28,7 @@
 
 {% block order_status_row %}
     {% set order = form.parent.vars.value %}
-    <div class="table-responsive">
-        <table class="table history-status row-margin-bottom">
-            <tbody>
-                {% for k, log in order.orderStatusLogs %}
-                    {% set status = log.orderStatus %}
-                    {% set style = ( k == 0 ? 'style=background-color:'~status.color~';color:'~blackOrWhite(status.color)~';' : '' ) %}
-                    <tr>
-                        <td {{ style }}><i class="fas fa-sync-alt"></i></td>
-                        <td {{ style }}>{{ status.title }}</td>
-                        <td {{ style }}></td>
-                        <td {{ style }}>{{ log.createdAt|date('d/m/Y h:i:s') }}</td>
-                        <td {{ style }} class="text-right">
-                            <a class="btn btn-lightgray" href="{{ path('order_resendmail_status', { 'statusLog' : log.id }) }}" title="Resend this email to the customer">
-                                <i class="fas fa-reply"></i>
-                                Renvoyer le mail
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    {% include '@AkyosShop/order/elements/_statusLog-table.html.twig' %}
     <div class="form-group form-row">
         {{ form_label(form) }}
         <div class="col-sm-10">

@@ -3,6 +3,7 @@
 namespace Akyos\ShopBundle\Entity;
 
 use Akyos\ShopBundle\Repository\PaymentRepository;
+use App\Entity\Shop\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

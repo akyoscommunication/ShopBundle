@@ -1,0 +1,22 @@
+{% extends '@AkyosCore/layout.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+    {% include '@AkyosCore/crud/elements/_header.html.twig' %}
+    {% include '@AkyosShop/order/elements/_table.html.twig' %}
+    <div class="aky-card mt-5">
+        <div class="aky-card-header">
+            <h2 class="aky-card-header__title">
+                Export
+            </h2>
+        </div>
+        <div class="aky-card-body">
+            {% include '@AkyosCore/crud/_form.html.twig' with {'form' : exportForm} %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

@@ -32,11 +32,17 @@ class CartExtension extends AbstractExtension
     {
         return [
             new TwigFunction('getTotalPriceOfCart', [$this, 'getTotalPriceOfCart']),
+            new TwigFunction('getDevise', [$this, 'getDevise']),
         ];
     }
 
     public function getTotalPriceOfCart(Cart $cart)
     {
-        return $this->cartService->getTotal($cart).' €';
+        return $this->cartService->getTotal($cart);
+    }
+
+    public function getDevise()
+    {
+        return '€';
     }
 }

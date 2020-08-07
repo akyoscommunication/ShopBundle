@@ -4,7 +4,7 @@ namespace Akyos\ShopBundle\Controller;
 
 use Akyos\ShopBundle\Entity\PaymentType;
 use Akyos\ShopBundle\Form\Handler\PaymentTypeHandler;
-use Akyos\ShopBundle\Form\PaymentTypeType;
+use Akyos\ShopBundle\Form\Type\Payment\PaymentTypeType;
 use Akyos\ShopBundle\Repository\PaymentTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

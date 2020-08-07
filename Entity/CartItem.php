@@ -3,6 +3,7 @@
 namespace Akyos\ShopBundle\Entity;
 
 use Akyos\ShopBundle\Repository\CartItemRepository;
+use App\Entity\Shop\Order;
 use App\Entity\Shop\Product;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,11 +34,6 @@ class CartItem
      * @ORM\Column(type="float")
      */
     private $qty;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="cartItems")
-     */
-    private $orderOfItem;
 
     /**
      * @ORM\Column(type="float")
@@ -81,18 +77,6 @@ class CartItem
     public function setQty(float $qty): self
     {
         $this->qty = $qty;
-
-        return $this;
-    }
-
-    public function getOrderOfItem(): ?Order
-    {
-        return $this->orderOfItem;
-    }
-
-    public function setOrderOfItem(?Order $orderOfItem): self
-    {
-        $this->orderOfItem = $orderOfItem;
 
         return $this;
     }

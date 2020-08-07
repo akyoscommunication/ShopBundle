@@ -2,7 +2,7 @@
 
 namespace Akyos\ShopBundle\EventListener;
 
-use Akyos\ShopBundle\Entity\Order;
+use App\Entity\Shop\Order;
 use Akyos\ShopBundle\Entity\OrderStatus;
 use Akyos\ShopBundle\Entity\OrderStatusLog;
 use Akyos\ShopBundle\Service\Mailer;

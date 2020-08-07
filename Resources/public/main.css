@@ -50,6 +50,15 @@
   color: color(white);
 }
 
+.small-text {
+  font-size: 80%;
+  font-weight: 400;
+}
+
+.p-nospace p {
+  margin-bottom: 0;
+}
+
 .aky-shop-table {
   width: 100%;
 }
@@ -89,13 +98,4 @@
 
 .aky-shop-table__total {
   font-size: 120%;
-}
-
-.small-text {
-  font-size: 80%;
-  font-weight: 400;
-}
-
-.p-nospace p {
-  margin-bottom: 0;
 }

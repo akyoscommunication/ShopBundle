@@ -40,7 +40,8 @@
                 {% endif %}
             {% endfor %}
             <td>
-                <a class="btn btn-secondary btn-sm" href="{{ path('order_new', {'cart': el.cart.id}) }}">Repasser commande <i class="fas fa-cash-register"></i></a>
+                <a class="btn btn-secondary btn-sm" href="{{ path('order_show', {'id': el.id}) }}"><i class="fas fa-eye"></i></a>
+{#                <a class="btn btn-secondary btn-sm" href="{{ path('order_new', {'cart': el.cart.id}) }}">Repasser commande <i class="fas fa-cash-register"></i></a>#}
                 <a class="btn btn-primary btn-sm" href="{{ path(route~'_edit', {'id': el.id}) }}"><i class="fas fa-pencil-alt"></i></a>
                 <form method="post" class="not-submit index-delete" action="{{ path(route~'_delete', {'id': el.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
                     <input type="hidden" name="_method" value="DELETE">

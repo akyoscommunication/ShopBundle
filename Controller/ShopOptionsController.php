@@ -2,16 +2,11 @@
 
 namespace Akyos\ShopBundle\Controller;
 
-use Akyos\BuilderBundle\Entity\BuilderOptions;
-use Akyos\BuilderBundle\Form\BuilderOptionsType;
-use Akyos\BuilderBundle\Repository\BuilderOptionsRepository;
 use Akyos\ShopBundle\Entity\PaymentType;
-use Akyos\ShopBundle\Entity\ShippingMode;
 use Akyos\ShopBundle\Entity\ShopOptions;
 use Akyos\ShopBundle\Form\ShopOptionsType;
 use Akyos\ShopBundle\Repository\PaymentTypeRepository;
 use Akyos\ShopBundle\Repository\ShopOptionsRepository;
-use Akyos\ShopBundle\Service\Payment\PaypalApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

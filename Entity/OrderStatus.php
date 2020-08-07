@@ -3,6 +3,7 @@
 namespace Akyos\ShopBundle\Entity;
 
 use Akyos\ShopBundle\Repository\OrderStatusRepository;
+use App\Entity\Shop\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,7 +26,7 @@ class OrderStatus
     private $title;
 
     /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="orderStatus")
+     * @ORM\OneToMany(targetEntity="App\Entity\Shop\Order", mappedBy="orderStatus")
      */
     private $orderOfStatus;
 
@@ -38,6 +39,11 @@ class OrderStatus
      * @ORM\Column(type="string", length=7, nullable=true)
      */
     private $color;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $position;
 
     public function __construct()
     {
@@ -119,5 +125,17 @@ class OrderStatus
     public function __toString()
     {
         return $this->title;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+
+        return $this;
     }
 }

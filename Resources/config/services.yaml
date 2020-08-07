@@ -25,7 +25,7 @@ services:
         - # these are the basic options that define the entity listener
           name: 'doctrine.orm.entity_listener'
           event: 'postUpdate'
-          entity: 'Akyos\ShopBundle\Entity\Order'
+          entity: 'App\Entity\Shop\Order'
 
           # set the 'lazy' option to TRUE to only instantiate listeners when they are used
           lazy: true

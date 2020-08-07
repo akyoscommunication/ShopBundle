@@ -14,6 +14,7 @@
                     {{ instanceOf(els, 'Knp\\Bundle\\PaginatorBundle\\Pagination\\SlidingPagination') ? knp_pagination_sortable(els, name, (field|split(';')|length > 1 ? field|split(';')[0]~'.' : 'a.')~(field|split(';')|length > 1 ? field|split(';')[1] : field)|lcfirst) : name }}
                 </th>
             {% endfor %}
+            <th>Vérifié ?</th>
             <th style="width: 15%">Action</th>
         </tr>
         </thead>
@@ -45,6 +46,9 @@
                         <td>{{ dynamicVariable(el, field) }}</td>
                     {% endif %}
                 {% endfor %}
+                <td>
+                    {{ el.isVerified ? 'oui' : 'non' }}
+                </td>
                 <td>
                     {% set details = '' %}
                     {% if view is defined %}

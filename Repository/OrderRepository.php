@@ -2,7 +2,7 @@
 
 namespace Akyos\ShopBundle\Repository;
 
-use Akyos\ShopBundle\Entity\Order;
+use App\Entity\Shop\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

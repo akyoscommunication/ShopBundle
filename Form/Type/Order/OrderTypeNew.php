@@ -1,8 +1,8 @@
 <?php
 
-namespace Akyos\ShopBundle\Form\Order;
+namespace Akyos\ShopBundle\Form\Type\Order;
 
-use Akyos\ShopBundle\Entity\Order;
+use App\Entity\Shop\Order;
 use Akyos\ShopBundle\Entity\PaymentType;
 use Akyos\ShopBundle\Repository\PaymentTypeRepository;
 use Symfony\Component\Form\AbstractType;

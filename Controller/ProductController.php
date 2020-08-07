@@ -4,7 +4,7 @@ namespace Akyos\ShopBundle\Controller;
 
 use App\Entity\Shop\Product;
 use Akyos\ShopBundle\Form\Handler\ProductHandler;
-use Akyos\ShopBundle\Form\ProductType;
+use Akyos\ShopBundle\Form\Type\Product\ProductType;
 use App\Repository\Shop\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

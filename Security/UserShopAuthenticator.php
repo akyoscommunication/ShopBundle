@@ -71,7 +71,11 @@ class UserShopAuthenticator extends AbstractFormLoginAuthenticator implements Pa
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            throw new CustomUserMessageAuthenticationException("Le compte n'existe pas.");
+        }
+
+        if (!$user->isVerified()) {
+            throw new CustomUserMessageAuthenticationException("Vous n'avez pas vérifier votre compte.");
         }
 
         return $user;

@@ -2,23 +2,19 @@
 
 namespace Akyos\ShopBundle\Entity;
 
-use Akyos\ShopBundle\Repository\OrderRepository;
+use App\Repository\Shop\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\MappedSuperclass;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * @ORM\Entity(repositoryClass=OrderRepository::class)
- * @ORM\Table(name="`order`")
+ * @MappedSuperclass
  */
-class Order
+class BaseOrder
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use TimestampableEntity;
 
     /**
      * @ORM\OneToOne(targetEntity=Payment::class, inversedBy="OrderOfPayment", cascade={"persist", "remove"})
@@ -80,7 +76,7 @@ class Order
      * @ORM\OneToMany(targetEntity=OrderStatusLog::class, mappedBy="orderOfStatusLog", orphanRemoval=true)
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
-    private $orderStatusLogs;
+    protected $orderStatusLogs;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=255)
@@ -91,11 +87,6 @@ class Order
     {
         $this->address = new ArrayCollection();
         $this->orderStatusLogs = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getPayment(): ?Payment
