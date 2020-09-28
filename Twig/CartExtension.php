@@ -4,6 +4,7 @@ namespace Akyos\ShopBundle\Twig;
 
 use Akyos\ShopBundle\Entity\Cart;
 use Akyos\ShopBundle\Service\Cart\CartService;
+use NumberFormatter;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -38,7 +39,9 @@ class CartExtension extends AbstractExtension
 
     public function getTotalPriceOfCart(Cart $cart)
     {
-        return $this->cartService->getTotal($cart);
+        $fmt = numfmt_create( 'fr_FR', NumberFormatter::CURRENCY );
+
+        return numfmt_format_currency($fmt, $this->cartService->getTotal($cart), 'EUR');
     }
 
     public function getDevise()

@@ -5,6 +5,7 @@ namespace Akyos\ShopBundle\Service\Cart;
 use Akyos\ShopBundle\Entity\BaseUserShop;
 use Akyos\ShopBundle\Entity\Cart;
 use Akyos\ShopBundle\Entity\CartItem;
+use Akyos\ShopBundle\Repository\ShopOptionsRepository;
 use App\Entity\Shop\Product;
 use Akyos\ShopBundle\Repository\CartItemRepository;
 use Akyos\ShopBundle\Repository\CartRepository;
@@ -24,23 +25,35 @@ class CartService
     private $session;
     /** @var CartItemRepository */
     private $cartItemRepository;
+    private $shopOptions;
 
-    public function __construct(EntityManagerInterface $em, Security $security, CartRepository $cartRepository, CartItemRepository $cartItemRepository, SessionInterface $session)
+    public function __construct(
+        EntityManagerInterface $em,
+        Security $security,
+        CartRepository $cartRepository,
+        CartItemRepository $cartItemRepository,
+        SessionInterface $session,
+        ShopOptionsRepository $shopOptionsRepository
+    )
     {
         $this->em = $em;
         $this->user = $security->getUser();
         $this->cartRepository = $cartRepository;
         $this->cartItemRepository = $cartItemRepository;
         $this->session = $session;
+        $this->shopOptions = $shopOptionsRepository->findAll()[0];
     }
 
-    public function getCart()
+    public function getCart($token = null)
     {
         /** @var Cart $cartSession */
         $cartSession = ($this->session->get('panier') ? $this->cartRepository->find($this->session->get('panier')) : null);
 
-        if ($this->user) {
-            $ifCartExist = $this->cartRepository->findOneBy(['client' => $this->user->getId(), 'isSaved' => false]);
+        if ($this->user && $this->user instanceof BaseUserShop) {
+            $ifCartExist = $this->shopOptions->getAnonymousUsers()
+                ? $this->cartRepository->findOneBy(['token' => $token, 'isSaved' => false])
+                : $this->cartRepository->findOneBy(['client' => $this->user->getId(), 'isSaved' => false]);
+
             if ($cartSession) {
                 if ($ifCartExist) {
                     foreach ($ifCartExist->getCartItems() as $cartItem) {
@@ -74,6 +87,11 @@ class CartService
             } else {
                 $newCart = new Cart();
                 $newCart->setIsSaved(false);
+
+                if ($token) {
+                    $newCart->setToken($token);
+                }
+
                 $this->em->persist($newCart);
                 $this->em->flush();
 

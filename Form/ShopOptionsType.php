@@ -26,6 +26,10 @@ class ShopOptionsType extends AbstractType
                 'label' => 'Payement par Paypal',
                 'required' => false
             ])
+            ->add('anonymousUsers', CheckboxType::class, [
+                'label' => 'Utilisateurs anonymes',
+                'required' => false
+            ])
         ;
 
         $formModifier = function (FormInterface $form, FormEvent $event) {

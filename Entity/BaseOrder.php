@@ -29,7 +29,7 @@ class BaseOrder
 
     /**
      * @ORM\ManyToOne(targetEntity=BaseUserShop::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $client;
 
@@ -56,13 +56,13 @@ class BaseOrder
 
     /**
      * @ORM\ManyToOne(targetEntity=ShopAddress::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $invoiceAddress;
 
     /**
      * @ORM\ManyToOne(targetEntity=ShopAddress::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $deliveryAddress;
 

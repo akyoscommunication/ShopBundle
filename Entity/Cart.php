@@ -41,6 +41,11 @@ class Cart
      */
     private $orderOfCart;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $token;
+
     public function __construct()
     {
         $this->cartItems = new ArrayCollection();
@@ -119,6 +124,18 @@ class Cart
         if ($orderOfCart->getCart() !== $this) {
             $orderOfCart->setCart($this);
         }
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

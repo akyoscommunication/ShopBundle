@@ -49,6 +49,11 @@ class ShopOptions
      */
     private $paypalSandbox;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $anonymousUsers;
+
     public function __construct()
     {
         $this->paypalShippingMode = new ArrayCollection();
@@ -146,6 +151,18 @@ class ShopOptions
     public function setPaypalSandbox(?bool $paypalSandbox): self
     {
         $this->paypalSandbox = $paypalSandbox;
+
+        return $this;
+    }
+
+    public function getAnonymousUsers(): ?bool
+    {
+        return $this->anonymousUsers;
+    }
+
+    public function setAnonymousUsers(bool $anonymousUsers): self
+    {
+        $this->anonymousUsers = $anonymousUsers;
 
         return $this;
     }
