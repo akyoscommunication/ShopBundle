@@ -48,11 +48,12 @@ class CartService
     {
         /** @var Cart $cartSession */
         $cartSession = ($this->session->get('panier') ? $this->cartRepository->find($this->session->get('panier')) : null);
+        $ifCartExist = $this->shopOptions->getAnonymousUsers()
+            ? $this->cartRepository->findOneBy(['token' => $token, 'isSaved' => false])
+            : null;
 
         if ($this->user && $this->user instanceof BaseUserShop) {
-            $ifCartExist = $this->shopOptions->getAnonymousUsers()
-                ? $this->cartRepository->findOneBy(['token' => $token, 'isSaved' => false])
-                : $this->cartRepository->findOneBy(['client' => $this->user->getId(), 'isSaved' => false]);
+            $ifCartExist = $this->cartRepository->findOneBy(['client' => $this->user->getId(), 'isSaved' => false]);
 
             if ($cartSession) {
                 if ($ifCartExist) {
@@ -82,7 +83,9 @@ class CartService
                 }
             }
         } else {
-            if ($cartSession) {
+            if ($ifCartExist) {
+                return $ifCartExist;
+            } else if ($cartSession){
                 return $cartSession;
             } else {
                 $newCart = new Cart();
