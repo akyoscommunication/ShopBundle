@@ -113,6 +113,8 @@ class CartService
         if ($existInCart) {
             $existInCart->setQty($existInCart->getQty() + $qty);
             $this->em->flush();
+
+            return $existInCart;
         } else {
             $cartItem = new CartItem();
             $cartItem->setCart($cart);
@@ -122,6 +124,8 @@ class CartService
             $cart->addCartItem($cartItem);
             $this->em->persist($cartItem);
             $this->em->flush();
+
+            return $cartItem;
         }
 
     }

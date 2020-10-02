@@ -33,6 +33,13 @@ class CartItemHandler extends AbstractController
     {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var CartItem $cartItem */
+            $cartItem = $form->getData();
+
+            if ($cartItem->getQty() <= 0) {
+                $this->em->remove($cartItem);
+            }
+
             $this->em->flush();
             return true;
         }

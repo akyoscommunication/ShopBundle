@@ -3,6 +3,7 @@
 namespace Akyos\ShopBundle\Twig;
 
 use Akyos\ShopBundle\Entity\Cart;
+use Akyos\ShopBundle\Entity\CartItem;
 use Akyos\ShopBundle\Service\Cart\CartService;
 use NumberFormatter;
 use Twig\Extension\AbstractExtension;
@@ -32,6 +33,7 @@ class CartExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('getTotalOfCartItems', [$this, 'getTotalOfCartItems']),
             new TwigFunction('getTotalPriceOfCart', [$this, 'getTotalPriceOfCart']),
             new TwigFunction('getDevise', [$this, 'getDevise']),
         ];
@@ -42,6 +44,30 @@ class CartExtension extends AbstractExtension
         $fmt = numfmt_create( 'fr_FR', NumberFormatter::CURRENCY );
 
         return numfmt_format_currency($fmt, $this->cartService->getTotal($cart), 'EUR');
+    }
+
+    public function getTotalOfCartItems(array $cartItems, array $entities = [])
+    {
+        $fmt = numfmt_create( 'fr_FR', NumberFormatter::CURRENCY );
+
+        if (!empty($entities)) {
+            $cartItems = array_filter($cartItems, function(CartItem $cartItem) use ($entities) {
+                foreach ($entities as $e) {
+                    if ($cartItem->getProduct() instanceof $e) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+
+        $total = 0;
+
+        foreach ($cartItems as $cartItem) {
+            $total += $cartItem->getPrice() * $cartItem->getQty();
+        }
+
+        return numfmt_format_currency($fmt, $total, 'EUR');
     }
 
     public function getDevise()

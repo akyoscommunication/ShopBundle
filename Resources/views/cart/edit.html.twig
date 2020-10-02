@@ -5,7 +5,11 @@
 {% block page_content %}
     <div class="aky-header-page">
         <h1 class="aky-header-page__title">Éditer {{ title }}</h1>
-        <a class="btn btn-outline-dark" href="{{ path('baseUserShop_show', { 'id' : el.client.id }) }}">Retour au client</a>
+        {% if el.client %}
+            <a class="btn btn-outline-dark" href="{{ path('baseUserShop_show', { 'id' : el.client.id }) }}">Retour au client</a>
+        {% else %}
+            <a class="btn btn-outline-dark" href="{{ path('cart_index') }}">Retour à la liste</a>
+        {% endif %}
     </div>
 
     <div class="content" data-type="{{ entity is defined ? entity : '' }}" data-typeid="{{ el.id is defined ? el.id : '' }}">

@@ -142,7 +142,7 @@ class CartController extends AbstractController
             $formCi = $this->get('form.factory')->createNamed("cartItem_{$ci->getId()}", CartItemType::class, $ci);
             $formCiArray[] = $formCi->createView();
 
-            if ($cartItemHandler->new($formCi, $request)){
+            if ($cartItemHandler->edit($formCi, $request)){
                 return $this->redirect($request->getUri());
             }
         }
