@@ -19,10 +19,12 @@ class OrderExportType extends AbstractType
 
         $builder
             ->add('beginAt', DateType::class, [
-                'label' => "Statut de la commande",
+                'label' => "Commence à",
+                'widget' => 'single_text'
             ])
             ->add('endAt', DateType::class, [
-                'label' => "Mode de livraison"
+                'label' => "Fini à",
+                'widget' => 'single_text'
             ])
         ;
     }

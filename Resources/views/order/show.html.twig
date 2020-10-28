@@ -5,7 +5,9 @@
 {% block page_content %}
     <div class="aky-header-page">
         <h1 class="aky-header-page__title">Commande - #{{ order.ref }}</h1>
-        <a class="btn btn-outline-dark" href="{{ path('baseUserShop_show', {'id' : order.client.id}) }}">Retour au client</a>
+        {% if order.client %}
+            <a class="btn btn-outline-dark" href="{{ path('baseUserShop_show', {'id' : order.client.id}) }}">Retour au client</a>
+        {% endif %}
     </div>
 
     <div class="row">
@@ -35,7 +37,11 @@
                         </div>
                         <div class="aky-card-body">
                             {% set client = order.client %}
-                            <p><b>Email : </b><small>{{ client.email }}</small></p>
+                            {% if client %}
+                                <p><b>Email : </b><small>{{ client.email }}</small></p>
+                            {% else %}
+                                <p><b>Token : </b><small>{{ order.cart.token }}</small></p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -74,17 +80,19 @@
                 </div>
                 <div class="aky-card-body small-text p-nospace">
                     {% set deliveryAddress = order.deliveryAddress %}
-                    <p><b>Titre : </b><small>{{ deliveryAddress.title }}</small></p>
-                    <p><b>Au nom de : </b><small>{{ deliveryAddress.firstName }} {{ deliveryAddress.lastName }}</small></p>
-                    <p><b>Entreprise : </b><small>{{ deliveryAddress.company }}</small></p>
-                    <p><b>vatNumber : </b><small>{{ deliveryAddress.vatNumber }}</small></p>
-                    <p><b>Adresse : </b><small>{{ deliveryAddress.address }} {{ deliveryAddress.addressTwo ? ', '~deliveryAddress.addressTwo }}</small></p>
-                    <p><b>Code postale : </b><small>{{ deliveryAddress.zip }}</small></p>
-                    <p><b>Ville : </b><small>{{ deliveryAddress.city }}</small></p>
-                    <p><b>Pays : </b><small>{{ deliveryAddress.country }}</small></p>
-                    <p><b>Téléphone fixe : </b><small>{{ deliveryAddress.homephone }}</small></p>
-                    <p><b>Téléphone portable : </b><small>{{ deliveryAddress.cellphone }}</small></p>
-                    <p><b>Autre : </b><small>{{ deliveryAddress.other }}</small></p>
+                    {% if deliveryAddress %}
+                        <p><b>Titre : </b><small>{{ deliveryAddress.title }}</small></p>
+                        <p><b>Au nom de : </b><small>{{ deliveryAddress.firstName }} {{ deliveryAddress.lastName }}</small></p>
+                        <p><b>Entreprise : </b><small>{{ deliveryAddress.company }}</small></p>
+                        <p><b>vatNumber : </b><small>{{ deliveryAddress.vatNumber }}</small></p>
+                        <p><b>Adresse : </b><small>{{ deliveryAddress.address }} {{ deliveryAddress.addressTwo ? ', '~deliveryAddress.addressTwo }}</small></p>
+                        <p><b>Code postale : </b><small>{{ deliveryAddress.zip }}</small></p>
+                        <p><b>Ville : </b><small>{{ deliveryAddress.city }}</small></p>
+                        <p><b>Pays : </b><small>{{ deliveryAddress.country }}</small></p>
+                        <p><b>Téléphone fixe : </b><small>{{ deliveryAddress.homephone }}</small></p>
+                        <p><b>Téléphone portable : </b><small>{{ deliveryAddress.cellphone }}</small></p>
+                        <p><b>Autre : </b><small>{{ deliveryAddress.other }}</small></p>
+                    {% endif %}
                 </div>
             </div>
             <div class="aky-card mb-5">
@@ -95,17 +103,19 @@
                 </div>
                 <div class="aky-card-body small-text p-nospace">
                     {% set invoiceAddress = order.invoiceAddress %}
-                    <p><b>Titre : </b><small>{{ invoiceAddress.title }}</small></p>
-                    <p><b>Au nom de : </b><small>{{ invoiceAddress.firstName }} {{ invoiceAddress.lastName }}</small></p>
-                    <p><b>Entreprise : </b><small>{{ invoiceAddress.company }}</small></p>
-                    <p><b>vatNumber : </b><small>{{ invoiceAddress.vatNumber }}</small></p>
-                    <p><b>Adresse : </b><small>{{ invoiceAddress.address }} {{ invoiceAddress.addressTwo ? ', '~invoiceAddress.addressTwo }}</small></p>
-                    <p><b>Code postale : </b><small>{{ invoiceAddress.zip }}</small></p>
-                    <p><b>Ville : </b><small>{{ invoiceAddress.city }}</small></p>
-                    <p><b>Pays : </b><small>{{ invoiceAddress.country }}</small></p>
-                    <p><b>Téléphone fixe : </b><small>{{ invoiceAddress.homephone }}</small></p>
-                    <p><b>Téléphone portable : </b><small>{{ invoiceAddress.cellphone }}</small></p>
-                    <p><b>Autre : </b><small>{{ invoiceAddress.other }}</small></p>
+                    {% if invoiceAddress %}
+                        <p><b>Titre : </b><small>{{ invoiceAddress.title }}</small></p>
+                        <p><b>Au nom de : </b><small>{{ invoiceAddress.firstName }} {{ invoiceAddress.lastName }}</small></p>
+                        <p><b>Entreprise : </b><small>{{ invoiceAddress.company }}</small></p>
+                        <p><b>vatNumber : </b><small>{{ invoiceAddress.vatNumber }}</small></p>
+                        <p><b>Adresse : </b><small>{{ invoiceAddress.address }} {{ invoiceAddress.addressTwo ? ', '~invoiceAddress.addressTwo }}</small></p>
+                        <p><b>Code postale : </b><small>{{ invoiceAddress.zip }}</small></p>
+                        <p><b>Ville : </b><small>{{ invoiceAddress.city }}</small></p>
+                        <p><b>Pays : </b><small>{{ invoiceAddress.country }}</small></p>
+                        <p><b>Téléphone fixe : </b><small>{{ invoiceAddress.homephone }}</small></p>
+                        <p><b>Téléphone portable : </b><small>{{ invoiceAddress.cellphone }}</small></p>
+                        <p><b>Autre : </b><small>{{ invoiceAddress.other }}</small></p>
+                    {% endif %}
                 </div>
             </div>
         </div>

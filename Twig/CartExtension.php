@@ -33,17 +33,23 @@ class CartExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('getTotalPriceOfCartWtPrice', [$this, 'getTotalPriceOfCartWtPrice']),
             new TwigFunction('getTotalOfCartItems', [$this, 'getTotalOfCartItems']),
             new TwigFunction('getTotalPriceOfCart', [$this, 'getTotalPriceOfCart']),
             new TwigFunction('getDevise', [$this, 'getDevise']),
         ];
     }
 
-    public function getTotalPriceOfCart(Cart $cart)
+    public function getTotalPriceOfCartWtPrice(Cart $cart)
     {
         $fmt = numfmt_create( 'fr_FR', NumberFormatter::CURRENCY );
 
         return numfmt_format_currency($fmt, $this->cartService->getTotal($cart), 'EUR');
+    }
+
+    public function getTotalPriceOfCart(Cart $cart)
+    {
+        return $this->cartService->getTotal($cart);
     }
 
     public function getTotalOfCartItems(array $cartItems, array $entities = [])

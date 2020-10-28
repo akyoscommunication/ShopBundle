@@ -73,7 +73,7 @@ class OrderController extends AbstractController
 
                 $records[] = [
                     $order->getCreatedAt()->format($format),
-                    $order->getClient()->getEmail(),
+                    $order->getClient() ? $order->getClient()->getEmail() : $order->getCart()->getToken(),
                     $order->getRef(),
                     ($total/1.2),
                     $total,

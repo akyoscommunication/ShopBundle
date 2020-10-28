@@ -24,7 +24,11 @@
                     <div class="card-body">
                         {% set user = form.vars.value.client %}
                         <h3>Client</h3>
-                        {{ user.email }}
+                        {% if user %}
+                            {{ user.email }}
+                        {% else %}
+                            {{ form.vars.value.cart.token }}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="aky-card mb-4">

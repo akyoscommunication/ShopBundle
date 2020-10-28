@@ -33,26 +33,6 @@ class OrderTypeNew extends AbstractType
             ->add('shippingMode', null, [
                 'label' => "Mode de livraison"
             ])
-            ->add('invoiceAddress', null, [
-                'label' => "Adresse de facturation",
-                'choices' => $order->getClient()->getAddresses(),
-                'multiple' => false,
-                'expanded' => false,
-                'block_prefix' => 'invoice_address',
-                'choice_label' => function ($choice) {
-                    return $choice->getTitle();
-                },
-            ])
-            ->add('deliveryAddress', null, [
-                'label' => "Adresse de livraison",
-                'choices' => $order->getClient()->getAddresses(),
-                'multiple' => false,
-                'expanded' => false,
-                'block_prefix' => 'delivery_address',
-                'choice_label' => function ($choice) {
-                    return $choice->getTitle();
-                },
-            ])
             ->add('paymentType', ChoiceType::class, [
                 'label' => "Paiement",
                 'mapped' => false,
@@ -62,6 +42,30 @@ class OrderTypeNew extends AbstractType
                 }
             ])
         ;
+        if ($order->getClient()) {
+            $builder
+                ->add('invoiceAddress', null, [
+                    'label' => "Adresse de facturation",
+                    'choices' => $order->getClient()->getAddresses(),
+                    'multiple' => false,
+                    'expanded' => false,
+                    'block_prefix' => 'invoice_address',
+                    'choice_label' => function ($choice) {
+                        return $choice->getTitle();
+                    },
+                ])
+                ->add('deliveryAddress', null, [
+                    'label' => "Adresse de livraison",
+                    'choices' => $order->getClient()->getAddresses(),
+                    'multiple' => false,
+                    'expanded' => false,
+                    'block_prefix' => 'delivery_address',
+                    'choice_label' => function ($choice) {
+                        return $choice->getTitle();
+                    },
+                ])
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
