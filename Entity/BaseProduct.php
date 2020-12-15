@@ -13,32 +13,32 @@ class BaseProduct
 {
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read"})
+     * @Groups({"read","read:cart"})
      */
     private $name;
 
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read"})
+     * @Groups({"read","read:cart"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read"})
+     * @Groups({"read","read:cart"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"read"})
+     * @Groups({"read","read:cart"})
      */
     private $published;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read"})
+     * @Groups({"read","read:cart"})
      */
     private $thumbnail;
 

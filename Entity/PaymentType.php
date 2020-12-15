@@ -6,6 +6,7 @@ use Akyos\ShopBundle\Repository\PaymentTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=PaymentTypeRepository::class)
@@ -23,6 +24,12 @@ class PaymentType
      * @ORM\Column(type="string", length=255)
      */
     private $title;
+
+    /**
+     * @Gedmo\Slug(fields={"title"}, updatable=false)
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     /**
      * @ORM\ManyToMany(targetEntity=ShippingMode::class, mappedBy="paymentTypes")
@@ -47,6 +54,18 @@ class PaymentType
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -31,6 +31,11 @@ class Payment
      */
     private $paymentType;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $content;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +66,18 @@ class Payment
     public function setPaymentType(?PaymentType $paymentType): self
     {
         $this->paymentType = $paymentType;
+
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
 
         return $this;
     }

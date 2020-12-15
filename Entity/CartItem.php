@@ -6,6 +6,7 @@ use Akyos\ShopBundle\Repository\CartItemRepository;
 use App\Entity\Shop\Order;
 use App\Entity\Shop\Product;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CartItemRepository::class)
@@ -13,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 class CartItem
 {
     /**
+     * @Groups({"read:cart"})
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -22,6 +25,7 @@ class CartItem
     /**
      * @ORM\ManyToOne(targetEntity=App\Entity\Shop\Product::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:cart"})
      */
     private $product;
 
@@ -32,11 +36,13 @@ class CartItem
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"read:cart"})
      */
     private $qty;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"read:cart"})
      */
     private $price;
 
