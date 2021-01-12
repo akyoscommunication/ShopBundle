@@ -2,7 +2,6 @@
 
 namespace Akyos\ShopBundle\Entity;
 
-use App\Repository\Shop\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

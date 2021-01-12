@@ -19,8 +19,9 @@ services:
         alias: "Akyos\\ShopBundle\\Service\\ExtendSidebar"
         public: true
 
-    Akyos\ShopBundle\EventListener\OrderStatusListener:
+    shop.eventlistener.order.status:
       arguments: [ '@Akyos\ShopBundle\Service\Mailer' ]
+      class: 'Akyos\ShopBundle\EventListener\OrderStatusListener'
       tags:
         - # these are the basic options that define the entity listener
           name: 'doctrine.orm.entity_listener'
