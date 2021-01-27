@@ -43,16 +43,20 @@ class CartExtension extends AbstractExtension
     public function getTotalPriceOfCartWtPrice(Cart $cart)
     {
         $fmt = numfmt_create( 'fr_FR', NumberFormatter::CURRENCY );
+        $total = $this->cartService->getTotal($cart);
 
-        return numfmt_format_currency($fmt, $this->cartService->getTotal($cart), 'EUR');
+        return numfmt_format_currency($fmt, $total, 'EUR');
     }
 
-    public function getTotalPriceOfCart(Cart $cart)
+    public function getTotalPriceOfCart(Cart $cart, $wtPrice = true)
     {
-        return $this->cartService->getTotal($cart);
+        $fmt = numfmt_create( 'fr_FR', NumberFormatter::CURRENCY );
+        $total = $this->cartService->getTotal($cart);
+
+        return $wtPrice ? numfmt_format_currency($fmt, $total, 'EUR') : $total;
     }
 
-    public function getTotalOfCartItems(array $cartItems, array $entities = [])
+    public function getTotalOfCartItems(array $cartItems, array $entities = [], $wtPrice = true)
     {
         $fmt = numfmt_create( 'fr_FR', NumberFormatter::CURRENCY );
 
@@ -73,7 +77,7 @@ class CartExtension extends AbstractExtension
             $total += $cartItem->getPrice() * $cartItem->getQty();
         }
 
-        return numfmt_format_currency($fmt, $total, 'EUR');
+        return $wtPrice ? numfmt_format_currency($fmt, $total, 'EUR') : $total;
     }
 
     public function getDevise()

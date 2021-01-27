@@ -67,7 +67,7 @@ class OrderMailController extends AbstractController
         return $this->render('@AkyosCore/crud/new.html.twig', [
             'title' => "Nouveau statut de commande",
             'entity' => 'OrderMail',
-            'route' => 'orderMail',
+            'route' => 'orderStatus',
             'form' => $orderMailForm->createView()
         ]);
     }
@@ -91,7 +91,7 @@ class OrderMailController extends AbstractController
             'el' => $orderMail,
             'title' => 'un status de commande',
             'entity' => 'OrderMail',
-            'route' => 'orderMail',
+            'route' => 'orderStatus',
             'form' => $form->createView(),
         ]);
     }
