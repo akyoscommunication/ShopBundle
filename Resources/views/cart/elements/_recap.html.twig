@@ -1,4 +1,4 @@
-{% set totalCart = getTotalPriceOfCart(cart)|round(2, 'floor') %}
+{% set totalCart = getTotalPriceOfCart(cart, false)|round(2, 'floor') %}
 {% set totalCartHt = (totalCart / 1.2)|round(2, 'floor') %}
 {% set devise = getDevise() %}
 

@@ -91,8 +91,8 @@ class OrderController extends AbstractController
 
         return $this->render('@AkyosShop/order/index.html.twig', [
             'els' => $els,
-            'title' => 'Orders',
-            'entity' => 'Order',
+            'title' => "Commandes",
+            'entity' => Order::class,
             'route' => 'order',
             'fields' => [
                 'Id' => 'Id',
