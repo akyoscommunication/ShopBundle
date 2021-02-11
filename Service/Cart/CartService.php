@@ -85,15 +85,24 @@ class CartService
         } else {
             if ($ifCartExist) {
                 return $ifCartExist;
-            } else if ($cartSession){
+            } else if ($token) {
+                $newCart = new Cart();
+                $newCart->setIsSaved(false);
+
+                $newCart->setToken($token);
+
+                $this->em->persist($newCart);
+                $this->em->flush();
+
+                $this->session->set('panier', $newCart->getId());
+
+                return $newCart;
+            }
+            else if ($cartSession){
                 return $cartSession;
             } else {
                 $newCart = new Cart();
                 $newCart->setIsSaved(false);
-
-                if ($token) {
-                    $newCart->setToken($token);
-                }
 
                 $this->em->persist($newCart);
                 $this->em->flush();

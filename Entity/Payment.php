@@ -26,7 +26,7 @@ class Payment
     private $OrderOfPayment;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PaymentType::class)
+     * @ORM\ManyToOne(targetEntity=PaymentType::class, cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $paymentType;
