@@ -161,7 +161,7 @@ class OrderController extends AbstractController
         $orderStatusMail = $statusLog->getOrderStatus()->getOrderEmail();
         if ($mailer->sendMessage($order->getClient()->getEmail(), $orderStatusMail->getSubject(), $orderStatusMail->getTemplate(), $order)) {
             $this->addFlash('success', "L'email à bien été renvoyé.");
-            return $this->redirect($request->get('callback'));
+            return $this->redirect(urldecode($request->get('callback')));
         }
     }
 
