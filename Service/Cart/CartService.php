@@ -151,7 +151,7 @@ class CartService
         $this->em->flush();
     }
 
-    public function getTotal(Cart $cart = NULL) : int
+    public function getTotal(Cart $cart = NULL) : float
     {
         $cart = ($cart ?: $this->getCart());
         $total = 0;
