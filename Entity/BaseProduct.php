@@ -25,7 +25,7 @@ class BaseProduct
     private $slug;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      * @Groups({"read","read:cart"})
      */
     private $price;
@@ -66,12 +66,12 @@ class BaseProduct
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(?int $price): self
+    public function setPrice(?float $price): self
     {
         $this->price = $price;
 
