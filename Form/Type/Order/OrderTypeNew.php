@@ -33,14 +33,6 @@ class OrderTypeNew extends AbstractType
             ->add('shippingMode', null, [
                 'label' => "Mode de livraison"
             ])
-            ->add('paymentType', ChoiceType::class, [
-                'label' => "Paiement",
-                'mapped' => false,
-                'choices' => $this->paymentTypeRepository->findAll(),
-                'choice_label' => function (PaymentType $choice) {
-                    return $choice->getTitle();
-                }
-            ])
         ;
         if ($order->getClient()) {
             $builder
@@ -66,6 +58,10 @@ class OrderTypeNew extends AbstractType
                 ])
             ;
         }
+        $builder->add('payment', \Akyos\ShopBundle\Form\Type\Payment\PaymentType::class, [
+            'label' => "Paiement de la commande",
+            'required' => false,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
