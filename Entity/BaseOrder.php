@@ -66,7 +66,7 @@ class BaseOrder
     private $deliveryAddress;
 
     /**
-     * @ORM\OneToOne(targetEntity=Cart::class, inversedBy="orderOfCart", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Cart::class, inversedBy="orderOfCart", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $cart;
