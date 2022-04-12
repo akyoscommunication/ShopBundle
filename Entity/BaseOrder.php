@@ -234,7 +234,7 @@ class BaseOrder
     {
         if (!$this->orderStatusLogs->contains($orderStatusLog)) {
             $this->orderStatusLogs[] = $orderStatusLog;
-            $orderStatusLog->setStatusLogOfOrder($this);
+            $orderStatusLog->setOrderOfStatusLog($this);
         }
 
         return $this;
@@ -245,8 +245,8 @@ class BaseOrder
         if ($this->orderStatusLogs->contains($orderStatusLog)) {
             $this->orderStatusLogs->removeElement($orderStatusLog);
             // set the owning side to null (unless already changed)
-            if ($orderStatusLog->getStatusLogOfOrder() === $this) {
-                $orderStatusLog->setStatusLogOfOrder(null);
+            if ($orderStatusLog->getOrderOfStatusLog() === $this) {
+                $orderStatusLog->setOrderOfStatusLog(null);
             }
         }
 
