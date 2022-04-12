@@ -61,8 +61,6 @@ class OrderHandler extends AbstractController
     public function delete(Order $order, Request $request)
     {
         if ($this->isCsrfTokenValid('delete' . $order->getId(), $request->request->get('_token'))) {
-
-           dump( $this->em->getUnitOfWork());
             $this->em->remove($order);
             $this->em->flush();
         }
