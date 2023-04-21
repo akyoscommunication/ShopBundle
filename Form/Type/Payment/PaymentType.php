@@ -20,7 +20,10 @@ class PaymentType extends AbstractType
                 'required' => false
             ])
             ->add('content', TextareaType::class, [
-                'label' => "Détail du paiement"
+                'label' => "Détail du paiement",
+                'attr' => [
+                    'required' => true
+                ]
             ])
             ->add('paymentType', EntityType::class, [
                 'class' => \Akyos\ShopBundle\Entity\PaymentType::class,
