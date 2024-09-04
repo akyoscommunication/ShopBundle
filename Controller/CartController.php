@@ -127,7 +127,7 @@ class CartController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE'])]
+    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE', 'POST'])]
     public function delete(Request $request, Cart $cart, CartHandler $cartHandler): Response
     {
         $cartHandler->delete($cart, $request);

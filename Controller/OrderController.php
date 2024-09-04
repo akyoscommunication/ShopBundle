@@ -28,7 +28,7 @@ use Knp\Component\Pager\PaginatorInterface;
 #[Route(path: '/admin/commande', name: 'order_')]
 class OrderController extends AbstractController
 {
-    
+
     #[Route(path: '/', name: 'index', methods: ['GET', 'POST'])]
     public function index(OrderRepository $orderRepository, PaginatorInterface $paginator, Request $request, CartService $cartService): Response
     {
@@ -96,7 +96,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    
+
     #[Route(path: '/new/{cart}', name: 'new', methods: ['GET', 'POST'])]
     public function new(Cart $cart, Request $request, OrderHandler $orderHandler, ShopAddressHandler $shopAddressHandler) : Response
     {
@@ -182,7 +182,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE'])]
+    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE', 'POST'])]
     public function delete(Request $request, Order $order, OrderHandler $orderHandler): Response
     {
         $orderHandler->delete($order, $request);

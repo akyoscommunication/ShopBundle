@@ -87,7 +87,7 @@ class ShopAddressController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE'])]
+    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE', 'POST'])]
     public function delete(Request $request, ShopAddress $shopAddress, ShopAddressHandler $shopAddressHandler): Response
     {
         $shopAddressHandler->delete($shopAddress, $request);

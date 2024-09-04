@@ -40,7 +40,7 @@ class OrderMailController extends AbstractController
         ]);
     }
 
-    
+
     #[Route(path: '/new/{id}', name: 'new', methods: ['GET', 'POST'])]
     public function new(OrderStatus $orderStatus, Request $request, OrderMailHandler $orderMailHandler): RedirectResponse|Response
     {
@@ -78,7 +78,7 @@ class OrderMailController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE'])]
+    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE', 'POST'])]
     public function delete(Request $request, OrderMail $orderMail, OrderMailHandler $orderMailHandler): Response
     {
         $orderMailHandler->delete($orderMail, $request);

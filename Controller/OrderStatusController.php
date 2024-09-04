@@ -39,7 +39,7 @@ class OrderStatusController extends AbstractController
         ]);
     }
 
-    
+
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, OrderStatusHandler $orderStatusHandler): RedirectResponse|Response
     {
@@ -75,7 +75,7 @@ class OrderStatusController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE'])]
+    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE', 'POST'])]
     public function delete(Request $request, OrderStatus $orderStatus, OrderStatusHandler $orderStatusHandler): Response
     {
         $orderStatusHandler->delete($orderStatus, $request);

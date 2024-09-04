@@ -81,7 +81,7 @@ class PaymentTypeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE'])]
+    #[Route(path: '/{id}/delete', name: 'delete', methods: ['DELETE', 'POST'])]
     public function delete(Request $request, PaymentType $paymentType, PaymentTypeHandler $paymentTypeHandler): Response
     {
         $paymentTypeHandler->delete($paymentType, $request);
