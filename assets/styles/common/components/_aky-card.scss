@@ -1,0 +1,43 @@
+.aky-card {
+    border-radius: 6px;
+    background-color: color(white);
+    color: color(gray-900);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.12);
+    padding: 2.5rem;
+
+    &.position-sticky {
+        top: 120px;
+    }
+
+    &-header {
+        padding-bottom: 2rem;
+        @include flex(row, wrap, space-between, center);
+        &__title {
+            font-weight: 600;
+        }
+    }
+    &-body {
+        //overflow: scroll;
+    }
+
+    &.primary {
+        background-color: color(primary);
+        color: color(white);
+    }
+
+    &.second {
+        background-color: color(second);
+        color: color(white);
+    }
+}
+
+.small-text {
+    font-size: 80%;
+    font-weight: 400;
+}
+
+.p-nospace {
+    p {
+        margin-bottom: 0;
+    }
+}

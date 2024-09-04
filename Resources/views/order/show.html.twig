@@ -1,0 +1,123 @@
+{% extends '@AkyosShop/layout.html.twig' %}
+
+{% block title %}{{ order.ref }} - {{ parent() }}{% endblock %}
+
+{% block page_content %}
+    <div class="aky-header-page">
+        <h1 class="aky-header-page__title">Commande - #{{ order.ref }}</h1>
+        {% if order.client %}
+            <a class="btn btn-outline-dark" href="{{ path('baseUserShop_show', {'id' : order.client.id}) }}">Retour au client</a>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="aky-card mb-5">
+                        <div class="aky-card-header">
+                            <h3 class="aky-card-header__title">
+                                Commande
+                            </h3>
+                        </div>
+                        <div class="aky-card-body">
+                            <p><b>Référence : </b><small>{{ order.ref }}</small></p>
+                            <p><b>Message : </b><small>{{ order.message }}</small></p>
+                            <p><b>Paiement : </b><small>{{ order.payment.paymentType }}</small></p>
+                            <p><b>Mode de livraison : </b><small>{{ order.shippingMode }}</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="aky-card mb-5">
+                        <div class="aky-card-header">
+                            <h3 class="aky-card-header__title">
+                                Client
+                            </h3>
+                        </div>
+                        <div class="aky-card-body">
+                            {% set client = order.client %}
+                            {% if client %}
+                                <p><b>Email : </b><small>{{ client.email }}</small></p>
+                            {% else %}
+                                <p><b>Token : </b><small>{{ order.cart.token }}</small></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="aky-card mb-5">
+                        <div class="aky-card-header">
+                            <h3 class="aky-card-header__title">
+                                Panier
+                            </h3>
+                        </div>
+                        <div class="aky-card-body">
+                            {% include '@AkyosShop/cart/elements/_recap.html.twig' with {'cart' : order.cart} %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="aky-card mb-5">
+                        <div class="aky-card-header">
+                            <h3 class="aky-card-header__title">
+                                Suivi des statuts
+                            </h3>
+                        </div>
+                        <div class="aky-card-body">
+                            {% include '@AkyosShop/order/elements/_statusLog-table.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="aky-card mb-5">
+                <div class="aky-card-header">
+                    <h3 class="aky-card-header__title">
+                        Livraison
+                    </h3>
+                </div>
+                <div class="aky-card-body small-text p-nospace">
+                    {% set deliveryAddress = order.deliveryAddress %}
+                    {% if deliveryAddress %}
+                        <p><b>Titre : </b><small>{{ deliveryAddress.title }}</small></p>
+                        <p><b>Au nom de : </b><small>{{ deliveryAddress.firstName }} {{ deliveryAddress.lastName }}</small></p>
+                        <p><b>Entreprise : </b><small>{{ deliveryAddress.company }}</small></p>
+                        <p><b>vatNumber : </b><small>{{ deliveryAddress.vatNumber }}</small></p>
+                        <p><b>Adresse : </b><small>{{ deliveryAddress.address }} {{ deliveryAddress.addressTwo ? ', '~deliveryAddress.addressTwo }}</small></p>
+                        <p><b>Code postale : </b><small>{{ deliveryAddress.zip }}</small></p>
+                        <p><b>Ville : </b><small>{{ deliveryAddress.city }}</small></p>
+                        <p><b>Pays : </b><small>{{ deliveryAddress.country }}</small></p>
+                        <p><b>Téléphone fixe : </b><small>{{ deliveryAddress.homephone }}</small></p>
+                        <p><b>Téléphone portable : </b><small>{{ deliveryAddress.cellphone }}</small></p>
+                        <p><b>Autre : </b><small>{{ deliveryAddress.other }}</small></p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="aky-card mb-5">
+                <div class="aky-card-header">
+                    <h3 class="aky-card-header__title">
+                        Facturation
+                    </h3>
+                </div>
+                <div class="aky-card-body small-text p-nospace">
+                    {% set invoiceAddress = order.invoiceAddress %}
+                    {% if invoiceAddress %}
+                        <p><b>Titre : </b><small>{{ invoiceAddress.title }}</small></p>
+                        <p><b>Au nom de : </b><small>{{ invoiceAddress.firstName }} {{ invoiceAddress.lastName }}</small></p>
+                        <p><b>Entreprise : </b><small>{{ invoiceAddress.company }}</small></p>
+                        <p><b>vatNumber : </b><small>{{ invoiceAddress.vatNumber }}</small></p>
+                        <p><b>Adresse : </b><small>{{ invoiceAddress.address }} {{ invoiceAddress.addressTwo ? ', '~invoiceAddress.addressTwo }}</small></p>
+                        <p><b>Code postale : </b><small>{{ invoiceAddress.zip }}</small></p>
+                        <p><b>Ville : </b><small>{{ invoiceAddress.city }}</small></p>
+                        <p><b>Pays : </b><small>{{ invoiceAddress.country }}</small></p>
+                        <p><b>Téléphone fixe : </b><small>{{ invoiceAddress.homephone }}</small></p>
+                        <p><b>Téléphone portable : </b><small>{{ invoiceAddress.cellphone }}</small></p>
+                        <p><b>Autre : </b><small>{{ invoiceAddress.other }}</small></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% block invoice_address_row %}
+    <div class="form-group form-row">
+        {{ form_label(form) }}
+        <div class="col-sm-9">
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+            {{ form_help(form) }}
+        </div>
+        <div class="col-md-1">
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addressModal"><i class="fas fa-plus-circle"></i></a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block delivery_address_row %}
+    <div class="form-group form-row">
+        {{ form_label(form) }}
+        <div class="col-sm-9">
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+            {{ form_help(form) }}
+        </div>
+        <div class="col-md-1">
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addressModal"><i class="fas fa-plus-circle"></i></a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block order_status_row %}
+    {% set order = form.parent.vars.value %}
+    {% include '@AkyosShop/order/elements/_statusLog-table.html.twig' %}
+    <div class="form-group form-row">
+        {{ form_label(form) }}
+        <div class="col-sm-10">
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+            {{ form_help(form) }}
+        </div>
+    </div>
+{% endblock %}

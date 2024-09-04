@@ -1,0 +1,73 @@
+{% extends '@AkyosShop/layout.html.twig' %}
+{% form_theme form '@AkyosShop/order/themes/new.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+    <div class="aky-header-page">
+        <h1 class="aky-header-page__title">{{ title }}</h1>
+        {% if el is defined %}
+            {% if el.client %}
+                <a class="btn btn-outline-dark" href="{{ path('baseUserShop_show', {'id' : el.client.id}) }}">Retour au client</a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-md-7">
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-outline-success">{{ button_label|default('Enregistrer') }}</button>
+                {{ form_end(form) }}
+            </div>
+            <div class="col-md-5">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        {% set user = form.vars.value.client %}
+                        <h3>Client</h3>
+                        {% if user %}
+                            {{ user.email }}
+                        {% else %}
+                            {{ form.vars.value.cart.token }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="aky-card mb-4">
+                    {% set cart = form.vars.value.cart %}
+                    <div class="aky-card-header">
+                        <h4 class="aky-card-header__title">Panier</h4>
+                    </div>
+                    <div class="aky-card-body">
+                        {% include '@AkyosShop/cart/elements/_recap.html.twig' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Ajouter une adresse</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(formAddress) }}
+                        {{ form_widget(formAddress) }}
+                        <button class="btn btn-outline-success">{{ button_label|default('Enregistrer') }}</button>
+                    {{ form_end(formAddress) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/akyosshop/main.js') }}"></script>
+{% endblock %}
